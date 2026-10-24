@@ -261,6 +261,9 @@ details.raw pre{white-space:pre-wrap;font:inherit;font-size:12.5px;background:va
       handover:(out['HANDOVER FOR THE NURSE']||[]).filter(function(x){ return x && !/^\(?only for/i.test(x); }) };
   }
 
+  // agent jargon -> plain words
+  function plain(t){ return String(t).replace(/(^|[.;]\s*)(?:their |his |her )?baseline (?:is|of)\s*/gi,'$1Normally ').replace(/\s+baseline (?:is|of)\s+/gi,' is normally ').replace(/\bbaseline\b/gi,'normal').replace(/;\s*/g,'. '); }
+
   // ---------- state ----------
   var S;
   function reset(){ S = {screen:'home', i:0, p:null, own:'', raw:'', example:false, copied:false, d:null, v:null, n:null}; }
@@ -358,7 +361,7 @@ details.raw pre{white-space:pre-wrap;font:inherit;font-size:12.5px;background:va
         (d.who?'<div><span class="lab">Who</span><span class="clamp">'+esc(d.who)+'</span></div>':'')+
       '</div>'+
       '<div class="card"><span class="lab">Why</span>'+(d.chips.length ? '<div class="chips">'+d.chips.map(function(c){ return '<span>'+esc(c)+'</span>'; }).join('')+(d.total?'<span class="total">= '+esc(d.total)+' points</span>':'')+'</div>' : '<span class="clamp">'+esc(d.why||'Not given')+'</span>')+'</div>'+
-      (d.change?'<div class="card"><span class="lab">What\'s different for them</span><span class="clamp">'+esc(d.change)+'</span></div>':'');
+      (d.change?'<div class="card"><span class="lab">Today vs. a normal day for them</span><span class="clamp">'+esc(plain(d.change))+'</span></div>':'');
     return {left:left, right:right, ok:true};
   }
 
