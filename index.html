@@ -1,514 +1,333 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0F5F63"><link rel="apple-touch-icon" href="icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="OKA"><meta name="apple-mobile-web-app-status-bar-style" content="default"><script>if('serviceWorker' in navigator && location.protocol==='https:'){navigator.serviceWorker.register('sw.js').catch(function(){});}</script><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>OKA One Knock Away</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#F2542D"><link rel="apple-touch-icon" href="icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="OKA"><meta name="apple-mobile-web-app-status-bar-style" content="default"><script>if('serviceWorker' in navigator && location.protocol==='https:'){navigator.serviceWorker.register('sw.js').catch(function(){});}</script><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>OKA One Knock Away</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800&display=swap">
 <style>
-/* Layout: one column (phone) for Band and Visitor views, wider two-column page for the Nurse view. Public-service look, high legibility. */
+/* Layout: product-style guided demo. Top bar with wordmark, step tracker, one actor screen, sticky Back/Next. White, one brand colour (OKA orange), Figtree. */
+[hidden]{display:none!important}
 :root{
-  --bg:#F3F1EC; --surface:#FFFFFF; --fg:#1B2430; --muted:#4F5966; --line:#DCD7CB;
-  --brand:#0F5F63; --brand-soft:#E1EDEC; --on-brand:#FFFFFF;
-  --red:#A3201A; --amber:#94470A; --green:#2F6B3B; --blue:#1F4E9A; --on-status:#FFFFFF;
-  --amber-soft:#FBEBD8; --amber-ink:#6E3504; --green-soft:#E3EFE5; --green-ink:#2A5F35; --red-soft:#F9E3E1; --red-ink:#7E1813; --blue-soft:#E3EAF7; --blue-ink:#1F3F7A;
-  --font:'Atkinson Hyperlegible','Segoe UI',system-ui,sans-serif;
+  --bg:#FFFFFF; --soft:#F4F5F7; --soft2:#EBEDF0; --fg:#0B1622; --muted:#5D6874; --line:#E4E7EB;
+  --brand:#F2542D; --brand-soft:#FFEEE8; --brand-ink:#B8391A; --on:#FFFFFF;
+  --red:#D92D20; --red-soft:#FDECEA; --amber:#C2570C; --amber-soft:#FFF1E2; --green:#1E7B45; --green-soft:#E6F4EC; --blue:#1F4FC9; --blue-soft:#E8EEFC;
+  --device:#0B1622; --font:'Figtree','Helvetica Neue',Arial,sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#11171B; --surface:#1B242A; --fg:#E8ECEE; --muted:#A7B1B9; --line:#2D3940;
-  --brand:#6DBDBA; --brand-soft:#16302F; --on-brand:#0A1C1D;
-  --red:#C2362D; --amber:#B0600F; --green:#3D8049; --blue:#5B8BD9; --on-status:#FFFFFF;
-  --amber-soft:#3A2915; --amber-ink:#F2C48F; --green-soft:#1C3222; --green-ink:#A3D6AC; --red-soft:#3C1A18; --red-ink:#F5ADA7; --blue-soft:#18253B; --blue-ink:#A9C3F0;
-  color-scheme:dark}}
+  --bg:#0A0E13; --soft:#141A21; --soft2:#1C242D; --fg:#F2F4F7; --muted:#9AA5B1; --line:#232C36;
+  --brand:#FF6A45; --brand-soft:#2E1710; --brand-ink:#FF9A80; --on:#FFFFFF;
+  --red:#F04438; --red-soft:#2D1210; --amber:#F08A3A; --amber-soft:#2B1A0C; --green:#3CCB7F; --green-soft:#0F2619; --blue:#6E95F5; --blue-soft:#121C33;
+  --device:#000000; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#11171B; --surface:#1B242A; --fg:#E8ECEE; --muted:#A7B1B9; --line:#2D3940;
-  --brand:#6DBDBA; --brand-soft:#16302F; --on-brand:#0A1C1D;
-  --red:#C2362D; --amber:#B0600F; --green:#3D8049; --blue:#5B8BD9; --on-status:#FFFFFF;
-  --amber-soft:#3A2915; --amber-ink:#F2C48F; --green-soft:#1C3222; --green-ink:#A3D6AC; --red-soft:#3C1A18; --red-ink:#F5ADA7; --blue-soft:#18253B; --blue-ink:#A9C3F0;
-  color-scheme:dark}
+  --bg:#0A0E13; --soft:#141A21; --soft2:#1C242D; --fg:#F2F4F7; --muted:#9AA5B1; --line:#232C36;
+  --brand:#FF6A45; --brand-soft:#2E1710; --brand-ink:#FF9A80; --on:#FFFFFF;
+  --red:#F04438; --red-soft:#2D1210; --amber:#F08A3A; --amber-soft:#2B1A0C; --green:#3CCB7F; --green-soft:#0F2619; --blue:#6E95F5; --blue-soft:#121C33;
+  --device:#000000; color-scheme:dark}
 html,body{height:100%}
-body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:17px;line-height:1.45}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
 *{box-sizing:border-box}
-button,textarea,select{font:inherit;color:inherit}
-:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
-.app{max-width:480px;min-height:100%;margin:0 auto;display:flex;flex-direction:column}
-.app.wide{max-width:1100px}
-.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.viewbar{display:flex;gap:6px;padding-block:8px;background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
-.viewbar button{flex:1;min-height:44px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);font-size:15px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1}
-.viewbar button small{font-weight:400;font-size:12px;color:var(--muted)}
-.viewbar button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
-.viewbar button[aria-pressed="true"] small{color:var(--bg);opacity:.8}
-.badge{display:inline-block;min-width:20px;padding:0 6px;border-radius:999px;background:var(--red);color:var(--on-status);font-size:12px;margin-left:4px}
-header.top{background:var(--brand);color:var(--on-brand);padding-block:16px 14px;display:flex;align-items:center;gap:12px}
-header.top .brand{font-size:13px;letter-spacing:.08em;text-transform:uppercase;opacity:.85}
-header.top h1{margin:0;font-size:23px;line-height:1.15;text-wrap:balance}
-header.top .sub{font-size:15px;opacity:.9}
-.iconbtn{width:44px;height:44px;flex-shrink:0;border-radius:12px;border:0;background:rgba(255,255,255,.16);color:inherit;display:flex;align-items:center;justify-content:center;cursor:pointer}
-main{flex:1;padding-block:16px 28px;display:flex;flex-direction:column;gap:12px}
-.card{background:var(--surface);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px;border:1px solid var(--line);min-width:0}
-button.card{text-align:left;cursor:pointer;width:100%}
-.row{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
-.name{font-size:18px;font-weight:700}
-.muted{color:var(--muted);font-size:15px}
-.small{font-size:14px}
-h2.h2{margin:0;font-size:19px}
-h3{margin:0;font-size:16px}
-.chip{font-size:13px;font-weight:700;padding:4px 10px;border-radius:999px;white-space:nowrap}
-.chip.todo{background:var(--line);color:var(--fg)}
-.chip.red{background:var(--red-soft);color:var(--red-ink)}
-.chip.amber{background:var(--amber-soft);color:var(--amber-ink)}
-.chip.green{background:var(--green-soft);color:var(--green-ink)}
-.chip.blue{background:var(--blue-soft);color:var(--blue-ink)}
-.pills{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
-.pill{flex-shrink:0;min-height:44px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);cursor:pointer;font-size:15px}
-.pill[aria-pressed="true"]{background:var(--brand);color:var(--on-brand);border-color:var(--brand)}
-.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.stat{background:var(--bg);border-radius:10px;padding:10px 12px}
-.stat b{display:block;font-size:20px;font-variant-numeric:tabular-nums}
-.stat span{font-size:13px;color:var(--muted)}
-.bandvis{display:flex;align-items:center;gap:14px}
-.band{width:64px;height:64px;border-radius:20px;background:var(--fg);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative}
-.band .dot{width:18px;height:18px;border-radius:999px;background:#3BA55C}
-.band.alert .dot{background:#E5483D;animation:blink 1s infinite}
-.band.off .dot{background:#888}
-@keyframes blink{50%{opacity:.25}}
-.scen{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.scen button{min-height:56px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);cursor:pointer;font-size:15px;text-align:left;padding:8px 12px;line-height:1.25}
-.scen button b{display:block;font-size:15px}
-.scen button span{font-size:13px;color:var(--muted)}
-.hero{border-radius:14px;padding:16px;color:var(--on-status);display:flex;flex-direction:column;gap:6px}
-.hero.red{background:var(--red)}.hero.amber{background:var(--amber)}.hero.green{background:var(--green)}.hero.blue{background:var(--blue)}
-.hero .lvl{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
-.hero h2{margin:0;font-size:22px;line-height:1.2;text-wrap:balance}
-.hero p{margin:0;font-size:16px}
-.tl{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
-.tl li{display:flex;gap:10px;align-items:flex-start;font-size:15px}
-.tl li .t{flex-shrink:0;font-variant-numeric:tabular-nums;color:var(--muted);width:44px}
-.btn{min-height:48px;border-radius:12px;border:0;font-size:16px;font-weight:700;cursor:pointer;padding:0 16px;width:100%}
-.btn.primary{background:var(--brand);color:var(--on-brand)}
-.btn.plain{background:var(--surface);border:1.5px solid var(--line)}
-.btn.red{background:var(--red);color:var(--on-status)}
-.btn.ghost{background:var(--green-soft);color:var(--green-ink)}
-.btn.sm{min-height:44px;font-size:15px;width:auto}
-.btn:disabled{opacity:.45;cursor:not-allowed}
-.actions{display:flex;flex-wrap:wrap;gap:8px}
-.req{border:2px solid var(--amber)}
-.req.urgent{border-color:var(--red)}
-.tags{display:flex;flex-wrap:wrap;gap:8px}
-.tag{min-height:44px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);cursor:pointer;font-size:15px}
-.tag[aria-pressed="true"]{background:var(--brand);color:var(--on-brand);border-color:var(--brand)}
-textarea{width:100%;min-height:90px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);padding:12px;font-size:16px;resize:vertical}
-label.lbl{font-size:15px;font-weight:700}
-.mic{width:96px;height:96px;border-radius:999px;border:0;background:var(--brand);color:var(--on-brand);display:flex;align-items:center;justify-content:center;cursor:pointer;align-self:center}
-.mic.rec{background:var(--red)}
-.ngrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px;align-items:start}
-.ncol{display:flex;flex-direction:column;gap:12px;min-width:0}
-.frow{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) 2em;gap:10px;align-items:center;font-size:15px}
-.fbar{height:12px;background:var(--bg);border-radius:999px;overflow:hidden}
-.ffill{display:block;height:100%;border-radius:999px}
-.ffill.green{background:var(--green)}.ffill.amber{background:var(--amber)}.ffill.red{background:var(--red)}.ffill.blue{background:var(--blue)}.ffill.muted{background:var(--muted)}
-.fnum{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
-.ho{font-size:15px;margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
-.note{font-size:13px;color:var(--muted);text-align:center}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:12px 16px;border-radius:12px;font-size:15px;max-width:calc(100% - 32px);z-index:20}
-.switch{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.switch input{width:22px;height:22px;accent-color:var(--brand)}
-@media (prefers-reduced-motion: reduce){.band.alert .dot{animation:none}}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.wrap{max-width:520px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.top{display:flex;align-items:center;justify-content:space-between;padding-block:18px 10px;gap:12px}
+.logo{display:flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;padding:0}
+.logo .mark{width:30px;height:30px;border-radius:8px;background:var(--brand);display:flex;align-items:center;justify-content:center}
+.logo b{font-size:24px;font-weight:800;letter-spacing:-.04em;color:var(--fg);line-height:1}
+.logo span{display:none}
+.home{min-height:36px;padding:0 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg);cursor:pointer;font-size:14px;font-weight:600;color:var(--muted)}
+main{flex:1;display:flex;flex-direction:column;gap:18px;padding-block:8px 24px}
+h1.title{font-size:36px;font-weight:800;letter-spacing:-.035em;line-height:1.05;margin:14px 0 0;text-wrap:balance}
+h1.title em{font-style:normal;color:var(--brand)}
+h2.story{font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1.2;margin:0;text-wrap:balance}
+.lead{font-size:17px;margin:0;color:var(--muted)}
+.eyebrow{font-size:13px;font-weight:700;color:var(--brand);margin:0}
+.roles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.role{background:var(--soft);border-radius:12px;padding:14px;display:flex;gap:12px;align-items:center;font-size:14px;line-height:1.3}
+.role div{display:flex;flex-direction:column}
+.ri{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--bg);color:var(--fg);border:1px solid var(--line)}
+.role b{font-size:15px;font-weight:700}
+.role small{color:var(--muted);font-size:13px}
+.stories{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line)}
+.storybtn{display:flex;gap:14px;align-items:center;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:16px 2px;cursor:pointer;width:100%}
+.storybtn:hover b{color:var(--brand)}
+.storybtn .num{width:40px;height:40px;border-radius:10px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:var(--fg);flex-shrink:0}
+.storybtn > span:nth-child(2){flex:1;min-width:0}
+.storybtn b{display:block;font-size:16px;font-weight:700}
+.storybtn span span{font-size:14px;color:var(--muted)}
+.storybtn .chev{color:var(--muted);flex-shrink:0}
+.stepper{display:flex;gap:4px}
+.st{flex:1;display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:600;color:var(--muted)}
+.st::before{content:"";height:4px;border-radius:2px;background:var(--soft2)}
+.st.done::before{background:var(--fg)}
+.st.on::before{background:var(--brand)}
+.st.on{color:var(--fg)}
+.st .ri{display:none}
+.time{font-size:14px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+.who{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700}
+.who .ri{width:28px;height:28px;border-radius:8px;background:var(--fg);color:var(--bg);border:0}
+.who .ri svg{width:16px;height:16px}
+.say{font-size:20px;font-weight:600;letter-spacing:-.01em;line-height:1.35;margin:0}
+.say small{display:block;font-size:15px;font-weight:400;color:var(--muted);margin-top:6px;letter-spacing:0}
+.stage{background:var(--soft);border-radius:16px;padding:22px 18px;display:flex;flex-direction:column;align-items:center;gap:14px}
+/* band */
+.wrist{position:relative;width:220px;height:116px;display:flex;align-items:center;justify-content:center}
+.strap{position:absolute;inset:36px 4px;border-radius:14px;background:var(--soft2)}
+.pod{position:relative;width:104px;height:104px;border-radius:30px;background:var(--device);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(11,22,34,.18)}
+.pod .btnc{width:52px;height:52px;border-radius:999px;border:2px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center}
+.pod .led{width:14px;height:14px;border-radius:999px;background:#2BD576;box-shadow:0 0 12px #2BD576}
+.pod.alert .led{background:#FF4D3D;box-shadow:0 0 14px #FF4D3D;animation:blink .9s infinite}
+.pod.alert{animation:buzz .35s infinite}
+.pod.off .led{background:#6B7580;box-shadow:none}
+@keyframes blink{50%{opacity:.2}}
+@keyframes buzz{0%,100%{transform:translateX(0)}25%{transform:translateX(-2px)}75%{transform:translateX(2px)}}
+.bubble{background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:15px;max-width:300px;text-align:center}
+.press{font-size:14px;font-weight:700;padding:6px 12px;border-radius:8px;background:var(--green-soft);color:var(--green)}
+.press.none{background:var(--red-soft);color:var(--red)}
+.press.off{background:var(--soft2);color:var(--fg)}
+/* bars */
+.bars{width:100%;display:flex;flex-direction:column;gap:14px}
+.bar{display:grid;grid-template-columns:70px minmax(0,1fr);gap:12px;align-items:center;font-size:14px}
+.bar b{font-weight:700}
+.bar .track{display:flex;flex-direction:column;gap:3px}
+.bar .b{height:8px;border-radius:4px}
+.bar .b.usual{background:var(--soft2)}
+.bar .b.now{background:var(--brand)}
+.bar .lab{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+/* OKA card */
+.okacard{width:100%;display:flex;flex-direction:column;gap:12px}
+.knows{background:var(--bg);border-radius:12px;padding:14px;font-size:15px;display:flex;flex-direction:column;gap:6px;border:1px solid var(--line)}
+.knows b{font-size:13px;font-weight:700;color:var(--muted)}
+.knows span::before{content:"";display:inline-block;width:6px;height:6px;border-radius:2px;background:var(--brand);margin-right:10px;vertical-align:middle}
+.decision{border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:6px;background:var(--bg);border:1px solid var(--line)}
+.decision small{align-self:flex-start;font-size:12px;font-weight:700;padding:3px 8px;border-radius:6px}
+.decision.red small{background:var(--red-soft);color:var(--red)}.decision.amber small{background:var(--amber-soft);color:var(--amber)}.decision.green small{background:var(--green-soft);color:var(--green)}.decision.blue small{background:var(--blue-soft);color:var(--blue)}
+.decision b{font-size:19px;font-weight:700;letter-spacing:-.01em;line-height:1.3}
+.decision span{font-size:14px;color:var(--muted)}
+.why{font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px;font-variant-numeric:tabular-nums}
+.why span{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:2px 8px}
+.twocol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;width:100%}
+.twocol .decision b{font-size:16px}
+/* phone */
+.phone{width:100%;max-width:320px;border-radius:34px;border:9px solid var(--device);background:var(--soft);overflow:hidden;box-shadow:0 14px 40px rgba(11,22,34,.16)}
+.ph-top{display:flex;align-items:center;gap:8px;padding:12px 14px;background:var(--bg);color:var(--fg);font-size:14px;font-weight:700;border-bottom:1px solid var(--line)}
+.ph-top .ri{width:24px;height:24px;border-radius:7px;background:var(--brand);color:var(--on);border:0}
+.ph-top .ri svg{width:14px;height:14px}
+.ph-body{padding:12px;display:flex;flex-direction:column;gap:8px}
+.notif{background:var(--bg);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;font-size:14px;box-shadow:0 1px 3px rgba(11,22,34,.08)}
+.notif b{font-size:15px;font-weight:700}
+.notif .mut{font-size:12px;color:var(--muted);margin-top:4px}
+.choice{min-height:46px;border-radius:12px;border:1px solid var(--line);background:var(--bg);cursor:pointer;font-size:15px;font-weight:600;width:100%;padding:0 12px}
+.choice.go{background:var(--fg);border-color:var(--fg);color:var(--bg)}
+.choice.stop{background:var(--bg);border-color:var(--red);color:var(--red)}
+.choice[aria-pressed="true"]{box-shadow:0 0 0 3px var(--brand)}
+.ho{margin:0;padding:10px 12px 10px 28px;font-size:13px;display:flex;flex-direction:column;gap:4px;background:var(--bg);border-radius:12px}
+/* end */
+.endcard{background:var(--fg);color:var(--bg);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:10px}
+.endcard h2{font-size:26px;font-weight:800;letter-spacing:-.03em;margin:0;line-height:1.15}
+.endcard p{margin:0;font-size:16px;opacity:.85}
+.ticks{display:flex;flex-direction:column;gap:8px;margin:6px 0 0;padding:0;list-style:none;font-size:15px}
+.ticks li{display:flex;gap:10px;align-items:flex-start}
+.ticks svg{color:var(--brand)}
+.nav{display:flex;gap:10px;position:sticky;bottom:0;background:var(--bg);padding-block:12px calc(14px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line)}
+.nb{flex:1;min-height:52px;border-radius:12px;border:0;font-size:16px;font-weight:700;cursor:pointer}
+.nb.back{background:var(--bg);border:1px solid var(--line);flex:0 0 auto;padding:0 20px}
+.nb.next{background:var(--fg);color:var(--bg)}
+.nb:disabled{opacity:.3;cursor:not-allowed}
+.small{font-size:14px;color:var(--muted)}
+.linkish{align-self:flex-start;background:none;border:0;color:var(--brand-ink);font-weight:700;cursor:pointer;font-size:14px;min-height:44px;padding:0}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(92px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:12px 16px;border-radius:10px;font-size:14px;max-width:calc(100% - 40px);z-index:20}
+.note{font-size:12px;color:var(--muted);margin:0}
+@media (prefers-reduced-motion: reduce){.pod.alert,.pod.alert .led{animation:none}}
 </style>
 
-<div class="app" id="app">
-  <div class="viewbar gut" role="group" aria-label="Demo view">
-    <button type="button" id="vb-band" data-view="band">Band<small>what happens</small></button>
-    <button type="button" id="vb-visitor" data-view="visitor">Visitor<small>postie app</small></button>
-    <button type="button" id="vb-nurse" data-view="nurse">Nurse team<small>queue</small></button>
+<div class="wrap">
+  <div class="top">
+    <button type="button" class="logo" id="logo" aria-label="OKA home">
+      <span class="mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 21V4h10v17"></path><path d="M4 21h16"></path><circle cx="14" cy="12.5" r="0.9" fill="#fff"></circle></svg></span><b>oka</b><span>One Knock Away</span>
+    </button>
+    <button type="button" class="home" id="home" hidden>All stories</button>
   </div>
-  <header class="top gut" id="hdr"></header>
-  <main class="gut" id="screen" aria-live="polite"></main>
+  <main id="screen" aria-live="polite"></main>
+  <div class="nav" id="nav" hidden>
+    <button type="button" class="nb back" id="back">Back</button>
+    <button type="button" class="nb next" id="next">Next</button>
+  </div>
   <div class="toast" id="toast" role="status" hidden></div>
 </div>
 
 <script>
 (function(){
-  // ---------- Fictional residents (match the agent's knowledge file) ----------
-  var R = [
-    {id:'DS-001', name:'Mrs Asha Patel', short:'Mrs Patel', age:84, addr:'12 Elm Road', usual:'Walks to the corner shop most days', steps:4000, hr:68, sleep:7, wake:'07:00', thinners:true, af:false,
-      record:'High blood pressure. Takes blood thinners.', key:'daughter Priya Patel', visitor:'Postie (round ~10:30)', plans:''},
-    {id:'DS-002', name:'Mr Daniel Okafor', short:'Mr Okafor', age:79, addr:'3 Mill Lane', usual:'Hard of hearing, waves from the kitchen window', steps:3000, hr:74, sleep:7, wake:'06:00', thinners:false, af:false,
-      record:'Type 2 diabetes. Hard of hearing.', key:'neighbour Joan Price (5 Mill Lane)', visitor:'Postie (round ~9:00)', plans:''},
-    {id:'DS-003', name:'Mrs June Hughes', short:'Mrs Hughes', age:91, addr:'Flat 4, Rose Court', usual:'At the window by 10am, walks with a frame', steps:1500, hr:72, sleep:8, wake:'08:00', thinners:false, af:false,
-      record:'Two falls in the last year. Often forgets the band after a shower.', key:'daughter Carol Hughes', visitor:'Postie (round ~11:00), Rose Court warden', plans:'Often stays with her daughter without telling anyone'},
-    {id:'DS-004', name:'Mrs Halina Nowak', short:'Mrs Nowak', age:87, addr:'27 Station Street', usual:'Sharp, does the crossword, speaks Polish', steps:4500, hr:70, sleep:7, wake:'07:00', thinners:false, af:false,
-      record:'No memory problems recorded.', key:'son Marek Nowak', visitor:'Pharmacy driver (Tue & Fri), postie (~12:00)', plans:'Polish club on Wednesdays'},
-    {id:'DS-005', name:'Mr Kiran Shah', short:'Mr Shah', age:76, addr:'9 Elm Road', usual:'Cooks for himself, cheerful', steps:5000, hr:76, sleep:7, wake:'06:30', thinners:false, af:false,
-      record:'COPD (lung condition).', key:'no key holder', visitor:'Postie (round ~10:45)', plans:'Day centre on Thursdays'},
-    {id:'DS-007', name:'Mr Tom Williams', short:'Mr Williams', age:82, addr:'8 Elm Road', usual:'Gardens every morning', steps:6000, hr:64, sleep:7, wake:'06:00', thinners:false, af:false,
-      record:'Nothing relevant. No known irregular heartbeat.', key:'son Gareth Williams', visitor:'Postie (round ~10:40)', plans:''},
-    {id:'DS-008', name:'Mr George Turner', short:'Mr Turner', age:93, addr:'2 Bell Lane', usual:'Slow to the door (2-3 min is normal), very sharp', steps:1200, hr:66, sleep:9, wake:'08:00', thinners:false, af:false,
-      record:'Walking stick, poor eyesight.', key:'neighbour Ali Hassan (4 Bell Lane)', visitor:'Postie (round ~9:30)', plans:''},
-    {id:'DS-010', name:'Mr Arthur Price', short:'Mr Price', age:89, addr:'1 Bell Lane', usual:'Wears hearing aids, likes a chat', steps:2500, hr:78, sleep:8, wake:'07:30', thinners:true, af:true,
-      record:'KNOWN irregular heartbeat (atrial fibrillation). Takes blood thinners.', key:'daughter Linda Price', visitor:'Postie (round ~9:35)', plans:''}
-  ];
-  function res(id){ for (var i=0;i<R.length;i++) if (R[i].id===id) return R[i]; }
-
-  // ---------- Scenarios the band can send (demo) ----------
-  var SCEN = [
-    {k:'fallOk', t:'Fall, presses "I\'m OK"', s:'Short press after the fall'},
-    {k:'fallHelp', t:'Fall, can\'t get up', s:'Long press: needs help'},
-    {k:'fallNone', t:'Fall, no response', s:'No press, no movement'},
-    {k:'decline', t:'Quiet decline', s:'Fewer steps, more sleep, missed pills'},
-    {k:'af', t:'Irregular heartbeat', s:'Rhythm alert, feels fine'},
-    {k:'hot', t:'Hot day', s:'Drink reminders ignored, high pulse'},
-    {k:'notWorn', t:'Band not worn', s:'No data for 13 hours'},
-    {k:'sos', t:'SOS: chest pain', s:'Long press + "pain in my chest"'}
-  ];
-
-  // ---------- State ----------
-  var S = {view:'band', sel:'DS-001', alerts:[], seq:0, slots:4, teamFull:false, vscreen:'round', vcur:null, vtags:[], vnote:'', copyText:null, rec:false};
-  var toastT = null, recog = null;
-  var SR = window.SpeechRecognition || window.webkitSpeechRecognition || null;
-  try { localStorage.removeItem('doorstep-band-demo'); } catch(e) {}
-
+  var IC = {
+    band:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="3"></rect><path d="M9 7V3h6v4M9 17v4h6v-4"></path></svg>',
+    oka:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"></path><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"></path></svg>',
+    visitor:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2"></rect><path d="M3 8l9 6 9-6"></path></svg>',
+    nurse:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3v5a4 4 0 0 0 8 0V3"></path><path d="M10 12v3a5 5 0 0 0 10 0v-2"></path><circle cx="20" cy="11" r="2"></circle></svg>',
+    family:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M17 11a3 3 0 1 0 0-6M21 21v-2a4 4 0 0 0-3-3.9"></path></svg>',
+    tick:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;margin-top:3px"><path d="M20 6L9 17l-5-5"></path></svg>'
+  };
+  var ROLE = {band:'Band', oka:'OKA (AI)', visitor:'Visitor', nurse:'Nurse', family:'Family'};
   var $ = function(id){ return document.getElementById(id); };
-  function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
-  function pad(n){ return (n<10?'0':'')+n; }
-  function clock(offMin){ var d = new Date(Date.now()+(offMin||0)*60000); return pad(d.getHours())+':'+pad(d.getMinutes()); }
-  function toast(m){ var t=$('toast'); t.textContent=m; t.hidden=false; clearTimeout(toastT); toastT=setTimeout(function(){ t.hidden=true; },3200); }
-  function header(title, sub, back){
-    $('hdr').innerHTML = (back?'<button type="button" class="iconbtn" id="hdr-back" aria-label="Back"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></button>':'')+
-      '<div><div class="brand">OKA \u00b7 One Knock Away</div><h1>'+esc(title)+'</h1>'+(sub?'<div class="sub">'+esc(sub)+'</div>':'')+'</div>';
-    if (back) $('hdr-back').onclick = back;
-  }
-  function recentConcern(r){ return S.alerts.some(function(a){ return a.res===r.id && a.score>0; }); }
-  function knockOpen(){ return S.alerts.filter(function(a){ return a.knock && !a.knockDone && !a.closed; }); }
+  function esc(s){ return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function ri(r, cls){ return '<span class="ri '+r+(cls?' '+cls:'')+'">'+IC[r]+'</span>'; }
+  function who(r, label){ return '<span class="who">'+ri(r)+esc(label||ROLE[r])+'</span>'; }
+  var toastT=null; function toast(m){ var t=$('toast'); t.textContent=m; t.hidden=false; clearTimeout(toastT); toastT=setTimeout(function(){t.hidden=true;},3000); }
 
-  // ---------- Triage engine (same rules as the Copilot agent, simplified) ----------
-  function makeAlert(r, k){
-    var a = {id:++S.seq, res:r.id, k:k, time:clock(0), why:[], score:0, log:[], knock:false, knockUrgent:false, knockDone:false, closed:false, outcome:null};
-    function add(label, pts){ a.score += pts; a.why.push(label+' +'+pts); }
-    function mods(){
-      if (a.score>0){
-        if (r.age>=85) add('Aged 85+',1);
-        if (recentConcern(r)) add('Earlier concern this week',1);
-      }
-    }
-    function scoreRoute(){
-      if (a.score>=4){ bookVisit(a); }
-      else if (a.score>=2){ a.level='amber'; a.route='call'; a.title='Nurse phone call today'; }
-      else if (a.score===1){ a.level='green'; a.route='watch'; a.title='Watch: next visitor checks'; a.knock=true; }
-      else { a.level='green'; a.route='noted'; a.title='Noted, normal for them'; }
-    }
-    var lines = [];
-    if (k==='fallOk'){
-      lines = [a.time+' fall detected', 'Pressed "I\'m OK" after 40 seconds', 'Moving since (35 steps)'];
-      a.signal='Fall detected, pressed "I\'m OK"';
-      add('Fall, responded',2); if (r.thinners) add('Blood thinners and a fall',1); mods(); scoreRoute();
-      if (a.route==='watch'||a.route==='noted'){ a.level='amber'; a.route='call'; a.title='Nurse phone call today'; }
-      a.knock=true; a.followUp='Did they hit their head? If yes on blood thinners: 999.';
-      a.log.push([a.time,'Band: vibrates, red light, "Are you OK?"'],[a.time,'Short press: "I\'m OK"'],[a.time,'Nurse call added to the queue'],[a.time,'Knock request sent to '+r.visitor.split(',')[0]],[a.time,'Text to '+r.key]);
-    } else if (k==='fallHelp'){
-      lines = [a.time+' fall detected', 'Long press: "I need help"', 'Not badly hurt, can\'t get up'];
-      a.signal='Fall, long press: can\'t get up';
-      a.level='amber'; a.route='pickup'; a.title='Falls pick-up team within 1 hour';
-      a.knock=true; a.knockUrgent=true;
-      a.log.push([a.time,'Long press: "I need help"'],[a.time,'Elmside Falls Pick-up Service booked (aim: 1 hour)'],[a.time,'Call to '+r.key],[a.time,'Nearest visitor asked to knock and stay outside until help arrives']);
-    } else if (k==='fallNone'){
-      lines = [a.time+' fall detected', 'No press after 60 seconds', 'No movement since'];
-      a.signal='Fall, no response, no movement';
-      a.level='amber'; a.route='ladder'; a.title='Fall ladder: checking now, 999 at '+clock(15);
-      a.deadline=clock(15); a.knock=true; a.knockUrgent=true;
-      a.log.push([a.time,'No press, no movement'],[a.time,'Calling '+r.short],[a.time,'Calling '+r.key],[a.time,'Nearest visitor asked to knock now'],[clock(15),'999 if still no movement']);
-    } else if (k==='decline'){
-      lines = ['Steps: 900 yesterday, 600 today (usual '+r.steps.toLocaleString('en-GB')+')', 'Slept '+(r.sleep+4)+'h two nights (usual '+r.sleep+'h)', 'Medication reminder missed 2 days'];
-      a.signal='Quiet decline over 2 days';
-      add('Steps less than half of usual',2); add('Sleep 3h+ more than usual',1); add('Medication reminders missed',1); mods(); scoreRoute();
-      if (a.route==='visit'||a.route==='review') a.log.push([a.time,'Pattern spotted over 2 days'],[a.time,a.route==='visit'?'Nurse visit booked today':'Team full: senior nurse reviews'],[a.time,'Text to '+r.key]);
-      else a.log.push([a.time,'Pattern spotted over 2 days'],[a.time,'Nurse call added']);
-    } else if (k==='af'){
-      lines = ['Irregular heart rhythm alert at '+a.time, 'Steps normal today', 'Check-in: short press, feels fine'];
-      a.signal='Irregular heart rhythm';
-      if (r.af){ a.level='green'; a.route='noted'; a.title='Noted: known irregular heartbeat'; a.why.push('Known atrial fibrillation in record, expected for them'); a.log.push([a.time,'Known AF in record: no action']); }
-      else { a.level='blue'; a.route='gp'; a.title='GP appointment within 2 days'; a.why.push('New irregular rhythm, no symptoms: stroke risk to check, not an emergency'); a.log.push([a.time,'GP practice asked for an appointment within 2 days'],[a.time,'Text to '+r.key]); }
-    } else if (k==='hot'){
-      lines = ['Temperature today 31°C', 'Drink reminders 10:00, 12:00, 14:00 not confirmed', 'Resting pulse '+Math.round(r.hr*1.3)+' since 13:00 (usual '+r.hr+')'];
-      a.signal='Hot day: drink reminders ignored, high pulse';
-      add('Drink reminders ignored on a hot day',1); add('Pulse 25%+ above usual for 2h',2); mods(); scoreRoute();
-      a.why.push('Note: the band cannot measure dehydration, it spots warning signs');
-      a.log.push([a.time,'Pattern spotted'],[a.time,a.route==='call'?'Nurse call added':'Nurse visit booked']);
-    } else if (k==='notWorn'){
-      lines = ['Band not worn since 21:30 yesterday', 'Now '+a.time+', no data'];
-      a.signal='Band not worn for 13 hours';
-      a.level='amber'; a.route='check'; a.title='Visitor check first, no nurse yet';
-      a.knock=true; a.deadline=clock(r.age>=90?60:120);
-      var first = r.plans ? 'Call '+r.key+' first ('+r.plans.toLowerCase()+')' : 'Call '+r.short;
-      a.log.push([a.time,'Check known plans'],[a.time,first],[a.time,'Knock request sent to '+r.visitor.split(',')[0]],[a.deadline,'Nurse visit if no one reaches them']);
-    } else if (k==='sos'){
-      lines = ['SOS long press at '+a.time, 'Voice: "I have pain in my chest"'];
-      a.signal='SOS: chest pain';
-      a.level='red'; a.route='999'; a.title='Call 999 now';
-      a.why.push('Chest pain = red flag. The band does not detect heart attacks; the person told us.');
-      a.log.push([a.time,'999 called'],[a.time,'Urgent community team told'],[a.time,'Call to '+r.key+' to open the door']);
-    }
-    a.lines = lines;
-    a.band = 'BAND ALERT. '+r.name+' (band '+r.id+'). '+lines.join('. ')+'. Now '+a.time+'.';
-    return a;
+  // ---------- building blocks ----------
+  function band(state, bubble, press){
+    return '<div class="wrist" aria-hidden="true"><div class="strap"></div><div class="pod '+state+'"><div class="btnc"><span class="led"></span></div></div></div>'+
+      (bubble?'<div class="bubble">'+esc(bubble)+'</div>':'')+(press?'<span class="press'+(press.cls?' '+press.cls:'')+'">'+esc(press.t)+'</span>':'');
   }
-  function bookVisit(a){
-    if (S.teamFull || S.slots<=0){ a.level='amber'; a.route='review'; a.title='Senior nurse review (team full)'; }
-    else { S.slots--; a.level='amber'; a.route='visit'; a.title='Nurse visit today'; }
+  function okaCard(knows, dec, whyList){
+    return '<div class="okacard"><div class="knows"><b>What OKA knows about them</b>'+knows.map(function(k){return '<span>'+esc(k)+'</span>';}).join('')+'</div>'+
+      '<div class="decision '+dec.lvl+'"><small>'+esc(dec.tag||({red:'Emergency',amber:'Act today',green:'No action',blue:'GP check'}[dec.lvl]))+'</small><b>'+esc(dec.t)+'</b>'+(dec.s?'<span>'+esc(dec.s)+'</span>':'')+'</div>'+
+      (whyList?'<div class="why">'+whyList.map(function(w){return '<span>'+esc(w)+'</span>';}).join('')+'</div>':'')+'</div>';
+  }
+  function phone(role, title, body){ return '<div class="phone"><div class="ph-top '+role+'">'+ri(role)+esc(title)+'</div><div class="ph-body">'+body+'</div></div>'; }
+  function notif(title, text, sub){ return '<div class="notif"><b>'+esc(title)+'</b><span>'+esc(text)+'</span>'+(sub?'<span class="mut">'+esc(sub)+'</span>':'')+'</div>'; }
+  function choices(key, opts){
+    var cur = S.ch[key];
+    return opts.map(function(o){ return '<button type="button" class="choice '+(o.cls||'')+'" data-ch="'+key+'|'+o.v+'" aria-pressed="'+(cur===o.v)+'">'+esc(o.t)+'</button>'; }).join('')+
+      (cur?'':'<p class="note">Tap an answer to continue</p>');
   }
 
-  function trigger(k){
-    var r = res(S.sel), a = makeAlert(r, k);
-    S.alerts.unshift(a); S.last = a.id;
-    render(); var el=$('result'); if (el && el.scrollIntoView) el.scrollIntoView({behavior:'smooth',block:'start'});
-    toast(a.knock ? 'Alert handled. A knock request went to the visitor app.' : 'Alert handled.');
-  }
-  function byId(id){ for (var i=0;i<S.alerts.length;i++) if (S.alerts[i].id===id) return S.alerts[i]; }
+  // ---------- stories ----------
+  var STORIES = [
+    {id:'fall', n:'1', title:'Mrs Patel falls, but says she\'s OK', teaser:'A fall at home. No ambulance, but nobody ignores it.', steps:[
+      {r:'band', time:'07:42', say:'Mrs Patel, 84, falls in her kitchen. Her band buzzes and asks if she\'s OK.', sub:'She presses the button once: "I\'m OK".',
+        stage:function(){ return band('alert','"Are you OK? Press once if you\'re fine."',{t:'One short press: I\'m OK'}); }},
+      {r:'oka', time:'07:43', say:'OKA checks what\'s normal for her before deciding.', sub:'She takes blood thinners, so a fall matters more.',
+        stage:function(){ return okaCard(['Usually up and walking by 7am','Takes blood thinners','Daughter Priya is her contact'],{lvl:'amber',t:'A nurse calls her today, and the postie knocks on his round',s:'No ambulance needed'},['Fall +2','Blood thinners +1','= 3 points']); }, copy:'BAND ALERT. Mrs Asha Patel (band DS-001). 07:42 fall detected. Person pressed "I\'m OK" after 40 seconds. Steps since 07:42: 35. Heart rate 96.'},
+      {r:'visitor', time:'10:30', say:'On his round, the postie gets a request on his phone.', sub:'He only knocks, looks and reports. No medical questions.',
+        stage:function(){ return phone('visitor','OKA · Visitor', notif('Please knock at 12 Elm Road','Check Mrs Patel is OK. Report what you see.','On your round today')+choices('v1',[{v:'ok',t:'Seen, she looks OK',cls:'go'},{v:'none',t:'No answer'},{v:'floor',t:'On the floor: calling 999',cls:'stop'}])); }, need:'v1'},
+      {r:'nurse', time:'11:00', say:function(){ return S.ch.v1==='floor'?'999 was called. The nurse team is told and follows up.':S.ch.v1==='none'?'No answer, so the nurse goes to see her today.':'The nurse calls her, with everything already summed up.'; },
+        sub:function(){ return S.ch.v1==='ok'?'The handover is written by OKA, so the call takes minutes.':''; },
+        stage:function(){ var v=S.ch.v1;
+          var head = v==='floor'?'999 called by the postie':v==='none'?'Visit booked: no answer at the door':'Phone call today';
+          return phone('nurse','OKA · Nurse team', notif('Mrs Asha Patel, 84 · '+head,'Fall at 07:42, pressed "I\'m OK". Takes blood thinners.','Postie at 10:30: '+(v==='ok'?'seen, looks OK':v==='none'?'no answer':'on the floor, 999 called'))+
+            '<ul class="ho"><li><b>Check first:</b> did she hit her head?</li><li><b>Usual:</b> walks to the shop daily</li><li><b>Contact:</b> daughter Priya</li></ul>'+
+            (v==='floor'?'':choices('n1',[{v:'ok',t:v==='ok'?'Called: she\'s fine at home':'Visited: safe at home',cls:'go'},{v:'hosp',t:'Needs hospital'}]))); }, need:function(){ return S.ch.v1==='floor'?null:'n1'; }}
+    ], end:function(){ var ok=S.ch.v1==='ok'&&S.ch.n1==='ok', home=S.ch.n1==='ok';
+        return {t: home?'Mrs Patel stays at home.':'Mrs Patel gets the right help, fast.', p: home?'No ambulance. No A&E. But her fall was not ignored.':'OKA escalated as soon as something looked wrong.',
+          l:[ 'The band caught the fall', 'OKA chose a call, not an ambulance', 'The postie checked on his normal round', ok?'The nurse confirmed in one short call':'The nurse acted on a clear handover']}; }},
 
-  // ---------- Ladder actions ----------
-  function ladderResolve(a, how){
-    var r = res(a.res);
-    if (how==='found'){
-      a.closed=true; a.knockDone=true; a.level='green'; a.route='resolved';
-      a.title = a.k==='notWorn' ? 'Resolved: '+(r.plans?'staying with family':'reached, forgot the band') : 'Resolved: reached, up and OK';
-      a.log.push([clock(0), a.k==='notWorn'&&r.plans ? r.key+': "She\'s with me this week"' : 'Reached by phone, OK']);
-      if (a.k==='fallNone'){ a.level='amber'; a.route='call'; a.title='Up and OK: nurse phone call today'; a.closed=false; }
-      toast('Resolved without an ambulance');
-    } else {
-      if (a.k==='fallNone'){ a.level='red'; a.route='999'; a.title='Call 999 now'; a.log.push([a.deadline||clock(0),'Still no movement after 15 min: 999 called']); a.knockDone=true; }
-      else { bookVisit(a); a.log.push([a.deadline||clock(0),'No one reached them: '+a.title.toLowerCase()]); }
-      toast('Escalated');
-    }
-    render();
+    {id:'noreply', n:'2', title:'Mr Okafor falls and doesn\'t answer', teaser:'OKA checks fast, and calls 999 only if it has to.', steps:[
+      {r:'band', time:'06:15', say:'Mr Okafor, 79, falls. His band asks if he\'s OK. Nothing.', sub:'No press. No movement. He\'s hard of hearing: maybe he didn\'t hear it.',
+        stage:function(){ return band('alert','"Are you OK? Press once if you\'re fine."',{t:'No press, no movement',cls:'none'}); }},
+      {r:'oka', time:'06:16', say:'OKA acts fast, but doesn\'t send an ambulance straight away.', sub:'His neighbour Joan has a key and lives next door.',
+        stage:function(){ return okaCard(['Hard of hearing','Neighbour Joan Price has a key (5 Mill Lane)','Usually up by 6am'],{lvl:'amber',t:'Call him and Joan now. Joan knocks.',s:'If still no movement at 06:30: 999'},['No response','No movement','= fall check, 15 minutes max']); }, copy:'BAND ALERT. Mr Daniel Okafor (band DS-002). 06:15 fall detected. No response to "Are you OK?" after 60 seconds. No movement since. Now 06:16.'},
+      {r:'family', time:'06:20', say:'Joan gets a call from OKA and goes next door.', sub:'She has a key, so she can check straight away.',
+        stage:function(){ return phone('family','OKA · Joan (neighbour)', notif('Daniel may have fallen','Please knock at 3 Mill Lane and check on him. You have his key.','Call from OKA, 06:16')+choices('j',[{v:'ok',t:'He\'s up. He just didn\'t hear it',cls:'go'},{v:'none',t:'06:30: still no answer',cls:'stop'}])); }, need:'j'},
+      {r:'nurse', time:function(){ return S.ch.j==='none'?'06:30':'09:00'; }, say:function(){ return S.ch.j==='none'?'15 minutes, still nothing. OKA calls 999. Joan opens the door for the crew.':'He\'s fine. A nurse still calls him later today.'; }, sub:'',
+        stage:function(){ var bad=S.ch.j==='none';
+          return phone('nurse','OKA · Nurse team', notif('Mr Daniel Okafor, 79 · '+(bad?'999 called at 06:30':'Phone call today'),'Fall at 06:15, no response.',bad?'Joan: no answer at the door. She opens it for the ambulance.':'Joan at 06:20: up and OK, didn\'t hear the band')+
+            '<ul class="ho"><li><b>Check:</b> injuries, how long on the floor</li><li><b>Record:</b> type 2 diabetes</li></ul>'+choices('n2',[{v:'ok',t:bad?'Ambulance attended':'Called: he\'s fine',cls:'go'}])); }, need:'n2'}
+    ], end:function(){ var bad=S.ch.j==='none';
+        return {t: bad?'Help arrived within minutes, not hours.':'No ambulance for a false alarm.', p:'We never send an ambulance for every fall. And we never leave someone on the floor for hours.',
+          l:['The band noticed he didn\'t answer','OKA called the neighbour with a key first',bad?'999 at 15 minutes, door already open':'Joan sorted it in 5 minutes','A nurse followed up']}; }},
+
+    {id:'decline', n:'3', title:'Mrs Nowak slowly gets worse', teaser:'No single alarm. OKA spots the pattern.', steps:[
+      {r:'band', time:'2 days', say:'Nothing dramatic happens. Mrs Nowak, 87, just does a bit less each day.', sub:'Fewer steps, much more sleep, and she missed her pills twice.',
+        stage:function(){ return '<div class="bars">'+
+          bar('Steps', 100, 13, '4,500 usual', '600 today')+
+          bar('Sleep', 64, 100, '7h usual', '11h last night')+
+          bar('Pills', 100, 0, 'Taken every day', 'Missed 2 days')+'</div>'; }},
+      {r:'oka', time:'16:00', say:'One change alone would be nothing. All three together is a warning.', sub:'OKA compares her with her own normal, not with anyone else.',
+        stage:function(){ return okaCard(['Usually sharp, does the crossword','Walks about 4,500 steps a day','No memory problems recorded'],{lvl:'amber',t:'A nurse visits her today',s:'Her son Marek is told'},['Steps down +2','More sleep +1','Missed pills +1','Aged 85+ +1','= 5 points']); }, copy:'BAND ALERT. Mrs Halina Nowak (band DS-004). Steps yesterday 900, today 600 at 16:00. Slept 11 hours last night and 10.5 the night before. Medication reminder not acknowledged 2 days in a row.'},
+      {r:'nurse', time:'17:30', say:'The nurse visits with a clear summary of what changed.', sub:'Catching it today, not after a fall or an emergency admission.',
+        stage:function(){ return phone('nurse','OKA · Nurse team', notif('Mrs Halina Nowak, 87 · Visit today','Quiet decline over 2 days. Score 5.','Steps 600 (usual 4,500) · sleep 11h (usual 7h) · pills missed 2 days')+
+          '<ul class="ho"><li><b>Check first:</b> why she missed her pills</li><li><b>Speaks:</b> Polish and some English</li></ul>'+choices('n3',[{v:'ok',t:'Visited: safe at home',cls:'go'},{v:'hosp',t:'Needs hospital'}])); }, need:'n3'}
+    ], end:function(){ var home=S.ch.n3==='ok';
+        return {t: home?'Caught early. She stays at home.':'Caught early, before a crisis.', p:'A panic button would never have rung. OKA noticed the pattern.',
+          l:['The band tracked small changes over 2 days','OKA added them up against her own normal','A nurse visited the same day','Her son was kept in the loop']}; }},
+
+    {id:'notworn', n:'4', title:'Mrs Hughes isn\'t wearing her band', teaser:'The biggest question: "what if they don\'t wear it?"', steps:[
+      {r:'band', time:'11:00', say:'No data from Mrs Hughes since 21:30 last night.', sub:'She\'s 91. She often forgets her band after a shower.',
+        stage:function(){ return band('off','No data for 13 hours',{t:'Band not worn',cls:'off'}); }},
+      {r:'oka', time:'11:01', say:'OKA doesn\'t panic. It checks what\'s likely first.', sub:'She often stays with her daughter Carol without telling anyone.',
+        stage:function(){ return okaCard(['Aged 91, walks with a frame','Often stays with daughter Carol','Forgets the band after showers'],{lvl:'amber',t:'Call Carol first. If not, the postie knocks.',s:'Within 1 hour, because she\'s 91. No nurse yet.'},['Band not worn','= check first']); }, copy:'BAND ALERT. Mrs June Hughes (band DS-003). Band not worn since 21:30 yesterday. Now 11:00. No data.'},
+      {r:'family', time:'11:05', say:'Carol gets a short call from OKA.', sub:'',
+        stage:function(){ return phone('family','OKA · Carol (daughter)', notif('Is your mum with you?','We haven\'t had data from her band since last night.','Call from OKA, 11:01')+choices('c',[{v:'yes',t:'Yes, she\'s with me this week',cls:'go'},{v:'no',t:'No, she\'s at home'}])); }, need:'c'},
+      {r:'visitor', time:'11:20', skip:function(){ return S.ch.c==='yes'; }, say:'The postie is on his round nearby, so he knocks.', sub:'',
+        stage:function(){ return phone('visitor','OKA · Visitor', notif('Please knock at Flat 4, Rose Court','Check Mrs Hughes is OK. Report what you see.','As soon as you can')+choices('v4',[{v:'ok',t:'Seen. Band was by the sink!',cls:'go'},{v:'floor',t:'On the floor: calling 999',cls:'stop'}])); }, need:'v4'}
+    ], end:function(){ var c=S.ch.c, v=S.ch.v4;
+        return {t: c==='yes'?'Sorted in one phone call.':v==='floor'?'Found within the hour, not the next day.':'Sorted by the postie in 20 minutes.', p:'A band that isn\'t worn is still a signal. OKA follows up, without sending a nurse for nothing.',
+          l:['OKA noticed the silence','It called the person most likely to know',c==='yes'?'No visit, no nurse, no worry':'The postie checked on his round','The nurse team stayed free for real cases']}; }},
+
+    {id:'compare', n:'5', title:'Same alert, two different people', teaser:'Why OKA beats a normal smartwatch.', steps:[
+      {r:'band', time:'09:00', say:'Two bands send the same alert: an irregular heartbeat.', sub:'Mr Price, 89, and Mr Williams, 82. Both feel fine.',
+        stage:function(){ return '<div class="twocol"><div style="display:flex;flex-direction:column;align-items:center;gap:8px">'+band('alert','')+'<b>Mr Price</b></div><div style="display:flex;flex-direction:column;align-items:center;gap:8px">'+band('alert','')+'<b>Mr Williams</b></div></div><span class="press none">Irregular heart rhythm</span>'; }},
+      {r:'oka', time:'09:01', say:'OKA knows them. So it makes two different decisions.', sub:'A normal smartwatch would alarm both families.',
+        stage:function(){ return '<div class="twocol"><div class="decision green"><small>Mr Price</small><b>Nothing to do</b><span>Known irregular heartbeat. Normal for him.</span></div><div class="decision blue"><small>Mr Williams</small><b>GP within 2 days</b><span>New for him. A stroke risk to check, not an emergency.</span></div></div>'; }}
+    ], end:function(){ return {t:'Fewer false alarms. Real ones caught.', p:'OKA compares every alert with that person\'s own normal.',
+          l:['Same signal, two people','No needless worry for Mr Price','A GP check for Mr Williams','No A&E visit for either']}; }}
+  ];
+  function bar(label, usual, now, ul, nl){
+    return '<div class="bar"><b>'+esc(label)+'</b><div class="track"><span class="b usual" style="width:'+usual+'%"></span><span class="lab">'+esc(ul)+'</span><span class="b now" style="width:'+Math.max(now,2)+'%"></span><span class="lab">'+esc(nl)+'</span></div></div>';
   }
 
-  // ---------- Visitor report on a knock request ----------
-  function visitorReport(a, what){
-    var r = res(a.res); a.knockDone = true;
-    if (what==='fine'){
-      a.log.push([clock(0),'Visitor: seen, looks OK']);
-      if (a.route==='watch'||a.route==='check'){ a.closed=true; a.level='green'; a.route='resolved'; a.title='Resolved: seen by visitor, OK'; }
-    } else if (what==='noanswer'){
-      a.log.push([clock(0),'Visitor: no answer at the door']);
-      if (a.route==='check'||a.route==='watch'||a.route==='call'){ bookVisit(a); a.log.push([clock(0),a.title]); }
-    } else if (what==='floor'){
-      a.log.push([clock(0),'Visitor: on the floor, not responding. 999 called']);
-      a.level='red'; a.route='999'; a.title='Call 999 now';
-    } else if (what==='worse'){
-      a.log.push([clock(0),'Visitor: seems worse than usual (note sent)']);
-      if (a.route!=='999') bookVisit(a);
-    }
-    S.vscreen='round'; render(); toast('Report sent. Thank you.');
-  }
+  // ---------- state ----------
+  var S = {story:null, step:0, ch:{}};
+  function cur(){ return STORIES.filter(function(s){return s.id===S.story;})[0]; }
+  function visibleSteps(st){ return st.steps.filter(function(x){ return !(x.skip && x.skip()); }); }
+  function val(x){ return typeof x==='function'?x():x; }
 
-  // ---------- Handover + copy ----------
-  function handover(a){
-    var r = res(a.res);
-    return [
-      ['Situation', a.lines.join('. ')+'.'],
-      ['Background', r.age+', lives alone, '+r.addr+'. '+r.record+' Key holder: '+r.key+'.'],
-      ['Usual self', r.usual+'. Band baseline: '+r.steps.toLocaleString('en-GB')+' steps/day, pulse '+r.hr+', sleep '+r.sleep+'h.'],
-      ['Recommendation', a.followUp || (a.route==='gp'?'GP to check the rhythm (ECG) within 2 days.': 'Check for injury, mobility and anything new.')]
-    ];
-  }
-  function copyFor(a){
-    var text = a.band;
-    function fallback(){ S.copyText=text; render(); var b=$('copybox'); if(b){ b.focus(); b.select(); } toast('Select the text and copy it'); }
-    try { navigator.clipboard.writeText(text).then(function(){ toast('Copied. Paste it into the OKA Care Agent in Copilot.'); }, fallback); } catch(e){ fallback(); }
-  }
-  function copyBox(){ return S.copyText ? '<section class="card"><label class="lbl" for="copybox">Text for the OKA Care Agent</label><textarea id="copybox" readonly style="min-height:110px;font-size:14px">'+esc(S.copyText)+'</textarea></section>' : ''; }
-
-  // ---------- Render ----------
   function render(){
-    ['band','visitor','nurse'].forEach(function(v){ $('vb-'+v).setAttribute('aria-pressed', String(S.view===v)); });
-    var n = knockOpen().length;
-    $('vb-visitor').innerHTML = 'Visitor'+(n?'<span class="badge">'+n+'</span>':'')+'<small>postie app</small>';
-    var q = S.alerts.filter(function(a){ return !a.closed && !a.outcome && ['call','visit','review','pickup','999','ladder','gp'].indexOf(a.route)>=0; }).length;
-    $('vb-nurse').innerHTML = 'Nurse team'+(q?'<span class="badge">'+q+'</span>':'')+'<small>queue</small>';
-    $('app').classList.toggle('wide', S.view==='nurse');
-    if (S.view==='band') rBand(); else if (S.view==='visitor') rVisitor(); else rNurse();
+    var st = cur();
+    $('home').hidden = !st; $('nav').hidden = !st;
+    if (!st) return rHome();
+    var steps = visibleSteps(st);
+    if (S.step >= steps.length) return rEnd(st, steps);
+    var s = steps[S.step];
+    var stepper = '<div class="stepper" aria-label="Story steps">'+steps.map(function(x,i){ return '<div class="st'+(i===S.step?' on':i<S.step?' done':'')+'">'+ri(x.r)+'<span>'+esc(ROLE[x.r])+'</span></div>'; }).join('')+'</div>';
+    var sub = val(s.sub);
+    $('screen').innerHTML = '<h2 class="story">'+esc(st.title)+'</h2>'+stepper+
+      '<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">'+who(s.r)+'<span class="time">'+esc(val(s.time))+'</span></div>'+
+      '<p class="say">'+esc(val(s.say))+(sub?'<small>'+esc(sub)+'</small>':'')+'</p>'+
+      '<div class="stage">'+s.stage()+'</div>'+
+      (s.copy?'<button type="button" class="linkish" id="copy">Copy this alert for the OKA agent in Copilot</button>':'');
+    if (s.copy) $('copy').onclick = function(){ copy(s.copy); };
+    Array.prototype.forEach.call(document.querySelectorAll('[data-ch]'), function(b){ b.onclick=function(){ var v=b.getAttribute('data-ch').split('|'); S.ch[v[0]]=v[1]; render(); }; });
+    var need = val(s.need);
+    $('back').disabled = false;
+    $('next').disabled = !!(need && !S.ch[need]);
+    $('next').textContent = S.step===steps.length-1 ? 'See the result' : 'Next';
   }
-
-  function heroFor(a){
-    var lvlWord = {red:'Red',amber:'Amber',green:'Green',blue:'GP'}[a.level];
-    return '<div class="hero '+a.level+'" id="result" style="scroll-margin-top:72px"><span class="lvl">'+lvlWord+' · '+esc(a.signal)+'</span><h2>'+esc(a.title)+'</h2></div>';
-  }
-
-  function rBand(){
-    var r = res(S.sel);
-    header('The OKA band', 'Demo: choose a person, then what the band detects');
-    var last = S.last ? byId(S.last) : null;
-    if (last && last.res!==r.id) last = null;
-    var html = '<div class="pills" role="group" aria-label="Resident">'+R.map(function(x){ return '<button type="button" class="pill" id="p-'+x.id+'" data-sel="'+x.id+'" aria-pressed="'+(x.id===S.sel)+'">'+esc(x.short)+'</button>'; }).join('')+'</div>';
-    var state = last && !last.closed && (last.k.indexOf('fall')===0||last.k==='sos') ? 'alert' : (last && last.k==='notWorn' && !last.closed ? 'off' : '');
-    html += '<section class="card"><div class="bandvis"><div class="band '+state+'" aria-hidden="true"><span class="dot"></span></div><div><div class="name">'+esc(r.name)+', '+r.age+'</div><div class="muted">'+esc(r.addr)+' · band '+r.id+'</div><div class="small">One button: short press = I\'m OK, long press = help</div></div></div>'+
-      '<div class="stats"><div class="stat"><b>'+r.steps.toLocaleString('en-GB')+'</b><span>usual steps a day</span></div><div class="stat"><b>'+r.hr+'</b><span>usual resting pulse</span></div><div class="stat"><b>'+r.sleep+'h</b><span>usual sleep</span></div><div class="stat"><b>'+esc(r.wake)+'</b><span>usually up by</span></div></div>'+
-      '<span class="muted small">Record: '+esc(r.record)+'</span></section>';
-    html += '<h2 class="h2">What does the band detect?</h2><div class="scen">'+SCEN.map(function(s){ return '<button type="button" id="s-'+s.k+'" data-k="'+s.k+'"><b>'+esc(s.t)+'</b><span>'+esc(s.s)+'</span></button>'; }).join('')+'</div>';
-    if (last){
-      html += heroFor(last)+
-        '<section class="card"><h3>What the band sent</h3><ul class="tl">'+last.lines.map(function(l){ return '<li>'+esc(l)+'</li>'; }).join('')+'</ul>'+
-        (last.why.length?'<span class="muted small">Why: '+esc(last.why.join(', '))+(last.score?' = '+last.score+' points (4+ visit, 2-3 call, 1 watch)':'')+'</span>':'')+'</section>'+
-        '<section class="card"><h3>What OKA did</h3><ul class="tl">'+last.log.map(function(l){ return '<li><span class="t">'+esc(l[0])+'</span><span>'+esc(l[1])+'</span></li>'; }).join('')+'</ul>'+
-        ladderButtons(last)+'</section>'+
-        '<div class="actions"><button type="button" class="btn plain sm" id="copy-last">Copy for agent</button>'+(last.knock&&!last.knockDone?'<button type="button" class="btn primary sm" id="go-visitor">Open the visitor app</button>':'')+'<button type="button" class="btn plain sm" id="go-nurse">Open nurse view</button></div>';
-    }
-    html += copyBox()+'<p class="note">Fictional people. In the real product, the OKA Care Agent in Copilot makes these decisions and a nurse confirms.</p>';
-    $('screen').innerHTML = html;
-    bindAll('[data-sel]', function(b){ S.sel=b.getAttribute('data-sel'); S.copyText=null; render(); });
-    bindAll('[data-k]', function(b){ S.copyText=null; trigger(b.getAttribute('data-k')); });
-    bindLadder();
-    if ($('copy-last')) $('copy-last').onclick=function(){ copyFor(last); };
-    if ($('go-visitor')) $('go-visitor').onclick=function(){ setView('visitor'); };
-    if ($('go-nurse')) $('go-nurse').onclick=function(){ setView('nurse'); };
-  }
-  function ladderButtons(a){
-    if (a.closed) return '';
-    if (a.route==='ladder') return '<div class="actions"><button type="button" class="btn ghost sm" data-lad="'+a.id+'|found">Key holder: he\'s up and OK</button><button type="button" class="btn red sm" data-lad="'+a.id+'|esc">Demo: '+esc(a.deadline)+', still no movement</button></div>';
-    if (a.route==='check') return '<div class="actions"><button type="button" class="btn ghost sm" data-lad="'+a.id+'|found">'+(res(a.res).plans?'Daughter: "She\'s with me"':'Reached: forgot the band')+'</button><button type="button" class="btn plain sm" data-lad="'+a.id+'|esc">Demo: '+esc(a.deadline)+', no one reached</button></div>';
-    return '';
-  }
-  function bindLadder(){ bindAll('[data-lad]', function(b){ var v=b.getAttribute('data-lad').split('|'); ladderResolve(byId(+v[0]), v[1]); }); }
-  function bindAll(sel, fn){ Array.prototype.forEach.call(document.querySelectorAll(sel), function(b){ b.onclick=function(){ fn(b); }; }); }
-
-  // ---------- Visitor (postie) view ----------
-  function rVisitor(){
-    if (S.vscreen==='knock') return rKnock();
-    if (S.vscreen==='note') return rNote();
-    var reqs = knockOpen();
-    header('Tuesday round', R.length+' OKA residents · '+reqs.length+' knock request'+(reqs.length===1?'':'s'));
-    var html = '';
-    if (reqs.length){
-      html += '<h2 class="h2">Please knock</h2>'+reqs.map(function(a){ var r=res(a.res);
-        return '<button type="button" class="card req'+(a.knockUrgent?' urgent':'')+'" data-req="'+a.id+'"><span class="row"><span class="name">'+esc(r.name)+'</span><span class="chip '+(a.knockUrgent?'red':'amber')+'">'+(a.knockUrgent?'As soon as you can':'On your round')+'</span></span><span class="muted">'+esc(r.addr)+'</span><span>Please knock and check '+esc(r.short)+' is OK. Report what you see.</span></button>'; }).join('');
-    } else {
-      html += '<section class="card"><span class="name">No knock requests</span><span class="muted">When the band spots something, a request appears here. Try a scenario in the Band view.</span></section>';
-    }
-    html += '<h2 class="h2">My round</h2>'+R.map(function(r){
-      return '<button type="button" class="card" data-note="'+r.id+'"><span class="row"><span class="name">'+esc(r.name)+'</span><span class="chip todo">Band '+r.id+'</span></span><span class="muted">'+esc(r.addr)+'</span><span class="small">Noticed something? Tap to send a note.</span></button>'; }).join('');
-    html += '<p class="note">Visitors only knock, look and report. Never go in, lift anyone or give medicine.</p>';
-    $('screen').innerHTML = html;
-    bindAll('[data-req]', function(b){ S.vcur=+b.getAttribute('data-req'); S.vscreen='knock'; render(); window.scrollTo(0,0); });
-    bindAll('[data-note]', function(b){ S.vcur=b.getAttribute('data-note'); S.vtags=[]; S.vnote=''; S.vscreen='note'; render(); window.scrollTo(0,0); });
-  }
-  function rKnock(){
-    var a = byId(S.vcur), r = res(a.res);
-    header('Knock request', r.name+' · '+r.addr, function(){ S.vscreen='round'; render(); });
+  function rHome(){
     $('screen').innerHTML =
-      '<section class="card req'+(a.knockUrgent?' urgent':'')+'"><span class="name">Please knock at '+esc(r.addr)+'</span><span>Check '+esc(r.short)+' is OK and report what you see. Don\'t go in.</span><span class="muted small">Usually: '+esc(r.usual)+'.</span></section>'+
-      '<h2 class="h2">What did you see?</h2>'+
-      '<button type="button" class="btn ghost" id="v-fine">Seen, looks OK</button>'+
-      '<button type="button" class="btn plain" id="v-worse">Seems worse than usual</button>'+
-      '<button type="button" class="btn plain" id="v-none">No answer</button>'+
-      '<button type="button" class="btn red" id="v-floor">On the floor, not responding: I\'m calling 999</button>'+
-      '<p class="note">Emergency? Call 999 first, then report.</p>';
-    $('v-fine').onclick=function(){ visitorReport(a,'fine'); };
-    $('v-worse').onclick=function(){ visitorReport(a,'worse'); };
-    $('v-none').onclick=function(){ visitorReport(a,'noanswer'); };
-    $('v-floor').onclick=function(){ visitorReport(a,'floor'); };
+      '<h1 class="title">Help is always <em>one knock away.</em></h1>'+
+      '<p class="lead">A simple wristband for older people who live alone. When something looks wrong, OKA gets the right person to their door, before it becomes a trip to hospital.</p>'+
+      '<div class="roles">'+
+        role('band','The band','Worn by the person')+role('oka','OKA','The AI that decides')+role('visitor','A visitor','Postie, carer, neighbour')+role('nurse','The nurse','Steps in when needed')+
+      '</div>'+
+      '<p class="eyebrow" style="margin-top:8px">See it in action</p>'+
+      '<div class="stories">'+STORIES.map(function(s){ return '<button type="button" class="storybtn" data-story="'+s.id+'"><span class="num">'+s.n+'</span><span><b>'+esc(s.title)+'</b><span>'+esc(s.teaser)+'</span></span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>'; }).join('')+'</div>'+
+      '<p class="note">Prototype with fictional people and services. DHSC / Microsoft AI Challenge, Group 5.</p>';
+    Array.prototype.forEach.call(document.querySelectorAll('[data-story]'), function(b){ b.onclick=function(){ S.story=b.getAttribute('data-story'); S.step=0; S.ch={}; render(); window.scrollTo(0,0); }; });
   }
-  var TAGS = [['slow','Slower than usual',1],['fall','Fall or hurt',2],['conf','Confused',2],['eat','Not eating',0],['cold','Home very cold',0],['scared','Seems scared',0]];
-  function rNote(){
-    var r = res(S.vcur);
-    header('Send a note', r.name+' · '+r.addr, function(){ S.vscreen='round'; stopRec(); render(); });
-    $('screen').innerHTML =
-      '<button type="button" class="btn red" id="n-999">Emergency? Call 999 first</button>'+
-      '<section class="card"><span class="name">'+esc(r.name)+'</span><span class="muted small">Usually: '+esc(r.usual)+'</span></section>'+
-      '<button type="button" class="mic'+(S.rec?' rec':'')+'" id="n-mic" aria-label="'+(S.rec?'Stop recording':'Record a voice note')+'"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"></rect><path d="M5 10v1a7 7 0 0 0 14 0v-1"></path><path d="M12 18v4"></path></svg></button>'+
-      '<p class="note" style="margin:0">'+(SR?'Tap and speak (20 seconds).':'Voice not available here: type instead.')+'</p>'+
-      '<div class="tags">'+TAGS.map(function(t){ return '<button type="button" class="tag" data-tag="'+t[0]+'" aria-pressed="'+(S.vtags.indexOf(t[0])>=0)+'">'+esc(t[1])+'</button>'; }).join('')+'</div>'+
-      '<label class="lbl" for="n-text">Note</label><textarea id="n-text" placeholder="What did you notice?">'+esc(S.vnote)+'</textarea>'+
-      '<button type="button" class="btn primary" id="n-send">Send note</button>';
-    $('n-999').onclick=function(){ var a=makeAlert(r,'sos'); a.signal='Visitor: emergency'; a.lines=['Visitor called 999 at '+a.time]; a.band='OKA OBSERVATION. Visitor at '+r.addr+': emergency, 999 called at '+a.time+'.'; S.alerts.unshift(a); S.vscreen='round'; render(); toast('999 logged. Stay with them if safe.'); };
-    $('n-text').oninput=function(e){ S.vnote=e.target.value; };
-    bindAll('[data-tag]', function(b){ var t=b.getAttribute('data-tag'), i=S.vtags.indexOf(t); if(i>=0) S.vtags.splice(i,1); else S.vtags.push(t); b.setAttribute('aria-pressed', String(i<0)); });
-    $('n-mic').onclick=toggleRec;
-    $('n-send').onclick=function(){ sendNote(r); };
+  function role(r, t, s){ return '<div class="role">'+ri(r)+'<div><b>'+esc(t)+'</b><small>'+esc(s)+'</small></div></div>'; }
+  function rEnd(st, steps){
+    var e = st.end();
+    var stepper = '<div class="stepper">'+steps.map(function(x){ return '<div class="st done">'+ri(x.r)+'<span>'+esc(ROLE[x.r])+'</span></div>'; }).join('')+'</div>';
+    $('screen').innerHTML = '<h2 class="story">'+esc(st.title)+'</h2>'+stepper+
+      '<div class="endcard"><h2>'+esc(e.t)+'</h2><p>'+esc(e.p)+'</p><ul class="ticks">'+e.l.map(function(l){ return '<li>'+IC.tick+'<span>'+esc(l)+'</span></li>'; }).join('')+'</ul></div>'+
+      '<button type="button" class="linkish" id="again">Replay this story with other choices</button>';
+    $('again').onclick=function(){ S.step=0; S.ch={}; render(); window.scrollTo(0,0); };
+    $('back').disabled=false;
+    var idx = STORIES.indexOf(st), nxt = STORIES[idx+1];
+    $('next').disabled=false; $('next').textContent = nxt ? 'Next story' : 'All stories';
   }
-  function sendNote(r){
-    var a = {id:++S.seq, res:r.id, k:'note', time:clock(0), why:[], score:0, log:[], knock:false, knockDone:true, closed:false};
-    var t = (S.vnote||'').toLowerCase(), social=false, scared=S.vtags.indexOf('scared')>=0 || /scared|shout|money/.test(t);
-    TAGS.forEach(function(g){ if (S.vtags.indexOf(g[0])>=0){ if (g[2]){ a.score+=g[2]; a.why.push(g[1]+' +'+g[2]); } else if (g[0]!=='scared') social=true; } });
-    if (/fell|fall/.test(t) && S.vtags.indexOf('fall')<0){ a.score+=2; a.why.push('Fall +2'); }
-    if (/confus/.test(t) && S.vtags.indexOf('conf')<0){ a.score+=2; a.why.push('Confused +2'); }
-    if (/fridge|not eating|cold/.test(t)) social=true;
-    if (a.score>0 && r.age>=85){ a.score+=1; a.why.push('Aged 85+ +1'); }
-    a.signal='Visitor note'; a.lines=[S.vnote||'Quick tags: '+S.vtags.join(', ')];
-    a.band='OKA OBSERVATION. Visitor at '+r.addr+', '+a.time+'. '+r.name+'. '+(S.vnote||'')+(S.vtags.length?' Tags: '+S.vtags.join(', ')+'.':'');
-    if (a.score>=4) bookVisit(a);
-    else if (a.score>=2){ a.level='amber'; a.route='call'; a.title='Nurse phone call today'; }
-    else if (scared){ a.level='amber'; a.route='council'; a.title='Council safeguarding team'; }
-    else if (social){ a.level='green'; a.route='council'; a.title='Council care team'; }
-    else { a.level='green'; a.route='noted'; a.title='Noted, thank you'; }
-    a.log.push([a.time,'Note from visitor'],[a.time,a.title]);
-    S.alerts.unshift(a); S.last=a.id; S.vscreen='round'; stopRec(); render(); toast(a.title);
-  }
-  function toggleRec(){
-    if (S.rec){ stopRec(); render(); return; }
-    if (!SR){ toast('Voice not available here. Type the note instead.'); return; }
-    try { recog = new SR(); } catch(e){ toast('Microphone not available'); return; }
-    var base = S.vnote; recog.lang='en-GB'; recog.interimResults=true; recog.continuous=true;
-    recog.onresult=function(e){ var s=''; for (var i=0;i<e.results.length;i++) s+=e.results[i][0].transcript+' '; S.vnote=(base?base+' ':'')+s.trim(); var n=$('n-text'); if(n) n.value=S.vnote; };
-    recog.onerror=function(){ stopRec(); render(); toast('Microphone not available. Type the note instead.'); };
-    recog.onend=function(){ S.rec=false; recog=null; render(); };
-    S.rec=true; render();
-    try { recog.start(); setTimeout(function(){ if (recog) try{ recog.stop(); }catch(e){} }, 20000); } catch(e){ S.rec=false; }
-  }
-  function stopRec(){ if (recog){ var x=recog; recog=null; try{ x.abort(); }catch(e){} } S.rec=false; }
-
-  // ---------- Nurse view ----------
-  var DONE = {home:'Visited: safe at home', hosp:'Visited: sent to hospital', callok:'Called: no visit needed', callvisit:'Called: book a visit', amb:'Ambulance attended', gp:'GP appointment booked', pick:'Picked up, safe at home'};
-  function rNurse(){
-    header('Today\'s queue', 'Elmside urgent community response team');
-    var A = S.alerts, total = A.length;
-    var c = {none:0, visitor:0, call:0, visit:0, gp:0, r999:0};
-    A.forEach(function(a){
-      if (a.route==='999') c.r999++;
-      else if (a.route==='visit'||a.route==='review'||a.route==='pickup') c.visit++;
-      else if (a.route==='call') c.call++;
-      else if (a.route==='gp') c.gp++;
-      else if (a.route==='check'||a.route==='ladder'||a.route==='watch') c.visitor++;
-      else c.none++;
-    });
-    var rows = [['none','Handled without a nurse','green'],['visitor','Visitor or family check','muted'],['gp','Sent to the GP','blue'],['call','Nurse phone call','amber'],['visit','Visit or pick-up','amber'],['r999','999','red']];
-    var sum = '<section class="card"><div class="row"><h2 class="h2">Today so far</h2><span class="muted">'+total+' alert'+(total===1?'':'s')+'</span></div>'+
-      (total ? rows.map(function(x){ var n=c[x[0]], p=Math.round(n/total*100); return '<div class="frow"><span>'+x[1]+'</span><span class="fbar"><span class="ffill '+x[2]+'" style="width:'+p+'%"></span></span><span class="fnum">'+n+'</span></div>'; }).join('')
-      : '<p class="muted" style="margin:0">No alerts yet. Go to the Band view and try a scenario.</p>')+
-      '<div class="row muted small" style="border-top:1px solid var(--line);padding-top:8px"><span><b>'+S.slots+'</b> of 12 visit slots left</span><label class="switch" for="full"><span>Team full</span><input type="checkbox" id="full"'+(S.teamFull?' checked':'')+'></label></div></section>';
-    var order = {'999':0,'ladder':1,'pickup':2,'review':3,'visit':4,'call':5,'gp':6};
-    var queue = A.filter(function(a){ return order.hasOwnProperty(a.route) && !a.outcome; }).sort(function(x,y){ return order[x.route]-order[y.route]; });
-    var done = A.filter(function(a){ return a.outcome; });
-    var other = A.filter(function(a){ return !order.hasOwnProperty(a.route) && !a.outcome; });
-    var q = queue.length ? queue.map(function(a){ var r=res(a.res);
-      return '<article class="card"><div class="row"><span class="name">'+esc(r.name)+', '+r.age+'</span><span class="chip '+(a.level==='red'?'red':a.level==='blue'?'blue':'amber')+'">'+esc(a.title)+'</span></div>'+
-        '<span class="muted small">'+esc(r.addr)+' · '+esc(a.signal)+' · '+esc(a.time)+'</span>'+
-        '<ul class="ho">'+handover(a).map(function(h){ return '<li><b>'+h[0]+':</b> '+esc(h[1])+'</li>'; }).join('')+'</ul>'+
-        (a.why.length&&a.score?'<span class="muted small">Score '+a.score+': '+esc(a.why.join(', '))+'</span>':'')+
-        '<div class="actions">'+outcomeButtons(a)+'<button type="button" class="btn plain sm" data-copy="'+a.id+'">Copy for agent</button></div>'+
-        ladderButtons(a)+
-        '<span class="note" style="text-align:left">The agent suggests. The nurse decides.</span></article>'; }).join('')
-      : '<div class="card"><span class="muted">Nothing needs the nurse team right now.</span></div>';
-    var d = done.length ? '<section class="card"><h3>Done today</h3>'+done.map(function(a){ return '<div class="row small" style="border-top:1px solid var(--line);padding-top:6px"><span>'+esc(res(a.res).name)+'</span><span class="muted">'+esc(a.outcome)+'</span></div>'; }).join('')+'</section>' : '';
-    var o = other.length ? '<section class="card"><h3>Handled without a nurse</h3>'+other.map(function(a){ return '<div class="row small" style="border-top:1px solid var(--line);padding-top:6px"><span>'+esc(res(a.res).name)+'</span><span class="muted">'+esc(a.title)+'</span></div>'; }).join('')+'</section>' : '';
-    $('screen').innerHTML = copyBox()+'<div class="ngrid"><div class="ncol">'+sum+d+o+'</div><div class="ncol"><h2 class="h2">Needs the nurse team</h2>'+q+'</div></div><p class="note">Fictional data. Counts only, no estimated savings.</p>';
-    $('full').onchange=function(e){ S.teamFull=e.target.checked; };
-    bindAll('[data-copy]', function(b){ copyFor(byId(+b.getAttribute('data-copy'))); });
-    bindAll('[data-out]', function(b){ var v=b.getAttribute('data-out').split('|'), a=byId(+v[0]);
-      if (v[1]==='callvisit'){ bookVisit(a); a.log.push([clock(0),'Nurse call: '+a.title.toLowerCase()]); toast(a.title); }
-      else { a.outcome = DONE[v[1]]; a.log.push([clock(0),'Nurse: '+a.outcome]); toast('Saved: '+a.outcome); }
-      render(); });
-    bindLadder();
-  }
-  function outcomeButtons(a){
-    function b(code, main){ return '<button type="button" class="btn '+(main?'primary':'plain')+' sm" data-out="'+a.id+'|'+code+'">'+DONE[code]+'</button>'; }
-    if (a.route==='visit'||a.route==='review') return b('home',true)+b('hosp');
-    if (a.route==='call') return b('callok',true)+b('callvisit');
-    if (a.route==='pickup') return b('pick',true)+b('hosp');
-    if (a.route==='999') return b('amb',true);
-    if (a.route==='gp') return b('gp',true);
-    return '';
+  function copy(text){
+    function fb(){ toast('Copy not available here. Select the text in the agent kit instead.'); }
+    try { navigator.clipboard.writeText(text).then(function(){ toast('Copied. Paste it into the OKA Care Agent in Copilot.'); }, fb); } catch(e){ fb(); }
   }
 
-  function setView(v){ stopRec(); S.view=v; S.copyText=null; if (v==='visitor') S.vscreen='round'; render(); window.scrollTo(0,0); }
-  bindAll('[data-view]', function(b){ setView(b.getAttribute('data-view')); });
+  $('next').onclick = function(){
+    var st=cur(), steps=visibleSteps(st);
+    if (S.step >= steps.length){ var i=STORIES.indexOf(st), n=STORIES[i+1]; if (n){ S.story=n.id; S.step=0; S.ch={}; } else S.story=null; }
+    else S.step++;
+    render(); window.scrollTo(0,0);
+  };
+  $('back').onclick = function(){ if (S.step===0) S.story=null; else S.step--; render(); window.scrollTo(0,0); };
+  $('home').onclick = $('logo').onclick = function(){ S.story=null; render(); window.scrollTo(0,0); };
+  try { localStorage.removeItem('oka-demo'); } catch(e){}
   render();
 })();
 </script>
