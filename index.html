@@ -178,7 +178,7 @@ details.raw pre{white-space:pre-wrap;font:inherit;font-size:12.5px;background:va
 <script>
 (function(){
   // Link to the agent in Copilot. Replace with the agent's own share link if you have it.
-  var AGENT_URL = 'https://m365.cloud.microsoft/chat';
+  var AGENT_URL = 'https://copilot.cloud.microsoft/chat/agent/T_f4581160-48b6-75c2-6836-ef7228b7081e.f1e8e6c9-bce3-4202-b738-4f46223c7e7f.gpt.1f5b2076-bf4d-426e-8223-5569d722857c';
 
   var IC = {
     band:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="3"></rect><path d="M9 7V3h6v4M9 17v4h6v-4"></path></svg>',
@@ -361,7 +361,7 @@ details.raw pre{white-space:pre-wrap;font:inherit;font-size:12.5px;background:va
         (d.who?'<div><span class="lab">Who</span><span class="clamp">'+esc(d.who)+'</span></div>':'')+
       '</div>'+
       '<div class="card"><span class="lab">Why</span>'+(d.chips.length ? '<div class="chips">'+d.chips.map(function(c){ return '<span>'+esc(c)+'</span>'; }).join('')+(d.total?'<span class="total">= '+esc(d.total)+' points</span>':'')+'</div>' : '<span class="clamp">'+esc(d.why||'Not given')+'</span>')+'</div>'+
-      (d.change?'<div class="card"><span class="lab">Today vs. a normal day for them</span><span class="clamp">'+esc(plain(d.change))+'</span></div>':'');
+      '<p class="hint" style="align-self:flex-start">Points are counted against this person\'s own normal, not general numbers.</p>';
     return {left:left, right:right, ok:true};
   }
 
