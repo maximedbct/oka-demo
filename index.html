@@ -191,7 +191,7 @@ h2.story{font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1.2;ma
   // ---------- stories ----------
   var STORIES = [
     {id:'fall', n:'1', title:'Mrs Patel falls, but says she\'s OK', teaser:'A fall at home. No ambulance, but nobody ignores it.', steps:[
-      {r:'band', time:'07:42', say:'Mrs Patel, 84, falls in her kitchen. Her band buzzes and asks if she\'s OK.', sub:'She presses the button once: "I\'m OK".',
+      {r:'band', time:'07:42', say:'Mrs Patel, 84, falls in her kitchen. Her band vibrates, flashes red and a small speaker asks: "Are you OK?"', sub:'She presses the button once: "I\'m OK".',
         stage:function(){ return band('alert','"Are you OK? Press once if you\'re fine."',{t:'One short press: I\'m OK'}); }},
       {r:'oka', time:'07:43', say:'OKA checks what\'s normal for her before deciding.', sub:'She takes blood thinners, so a fall matters more.',
         stage:function(){ return okaCard(['Usually up and walking by 7am','Takes blood thinners','Daughter Priya is her contact'],{lvl:'amber',t:'A nurse calls her today, and the postie knocks on his round',s:'No ambulance needed'},['Fall +2','Blood thinners +1','= 3 points']); }, copy:'BAND ALERT. Mrs Asha Patel (band DS-001). 07:42 fall detected. Person pressed "I\'m OK" after 40 seconds. Steps since 07:42: 35. Heart rate 96.'},
