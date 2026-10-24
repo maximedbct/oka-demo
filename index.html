@@ -381,6 +381,14 @@ details.raw pre{white-space:pre-wrap;font:inherit;font-size:12.5px;background:va
   function rNurse(){
     var d = S.d;
     var vis = S.v ? {ok:'Visitor: seen, looks OK',none:'Visitor: no answer at the door',floor:'Visitor: on the floor, 999 called'}[S.v] : '';
+    if (is999()){
+      var l999 = '<p class="eyebrow">Step '+(S.i+1)+' · The nurse team</p><h2>999 is called. The ambulance takes over.</h2>'+
+        '<p class="small">The nurse team is told straight away. The agent\'s handover goes with the alert, so the ambulance crew knows their history before they arrive.</p>'+
+        '<p class="hint">The nurse follows up after the crew has seen them.</p>';
+      var r999 = '<div class="panel">'+phone('nurse','OKA · Nurse team', '<div class="notif"><b>'+esc((person().id==='own'?'New case':person().name)+' · 999 called')+'</b><span class="mut">'+esc(vis||'Emergency route')+'</span><span class="mut">For your information. Ambulance on its way.</span></div>'+
+        (d.handover.length?'<ul class="ho">'+d.handover.map(function(h){ var m=h.match(/^([^:]{2,22}):\s*(.*)$/); return '<li>'+(m?'<b>'+esc(m[1])+':</b> '+esc(m[2]):esc(h))+'</li>'; }).join('')+'</ul>':''))+'</div>';
+      return {left:l999, right:r999, ok:true};
+    }
     var left = '<p class="eyebrow">Step '+(S.i+1)+' · The nurse</p><h2>The nurse already has the full picture.</h2>'+
       '<p class="small">The agent writes the handover, so the nurse doesn\'t start from scratch. A call takes minutes.</p>'+
       '<p class="hint">Tap what the nurse finds.</p>';
@@ -390,15 +398,17 @@ details.raw pre{white-space:pre-wrap;font:inherit;font-size:12.5px;background:va
     return {left:left, right:right, ok: !!S.n, bind:bindChoices};
   }
 
+  function is999(){ var d=S.d; return !!d && (d.lvl==='red' || S.v==='floor' || (S.v==='none' && d.ifs.length>0)); }
+
   function rResult(){
     var d = S.d, p = person();
     var home = S.n ? S.n==='ok' : S.v ? S.v==='ok' : true;
-    var called999 = S.v==='floor' || (S.v==='none' && d.ifs.length);
+    var called999 = is999();
     var title = called999 ? 'Found fast. Help on the way.' : d.lvl==='green' ? 'No false alarm.' : home ? 'They stay at home.' : 'The right help, fast.';
-    var sub = called999 ? 'Found within minutes, not hours later.' : d.lvl==='green' ? 'The agent knew this was normal for them. Nobody was disturbed.' : 'No needless ambulance, but nothing was ignored.';
+    var sub = called999 ? 'Help was called within 15 minutes, not hours later.' : d.lvl==='green' ? 'The agent knew this was normal for them. Nobody was disturbed.' : 'No needless ambulance, but nothing was ignored.';
     var tl = [['Band', p.id==='own'?'Sent the alert':p.event],['OKA agent (Copilot)', d.acts.join(' · ')]];
     if (d.msg) tl.push(['Visitor', {ok:'Knocked: they look OK',none: d.ifs.length?'No answer, so 999 was called at the time limit':'Knocked: no answer',floor:'Found them on the floor and called 999'}[S.v]||'Knocked']);
-    if (d.handover.length || d.lvl==='red') tl.push(['Nurse', called999 ? (S.n==='hosp'?'Ambulance took them to hospital':'Followed up after the ambulance crew') : S.n==='hosp'?'Sent them to hospital':'Checked: safe at home']);
+    if (d.handover.length || d.lvl==='red') tl.push(['Nurse', called999 ? 'Told at once. Follows up after the ambulance crew' : S.n==='hosp'?'Sent them to hospital':'Checked: safe at home']);
     var left = '<p class="eyebrow">Result</p><div class="endcard"><h2>'+esc(title)+'</h2><p>'+esc(sub)+'</p></div>'+
       '<p class="small">The decision came from our agent in Microsoft Copilot. In a real service, Power Automate would pass alerts and answers automatically.</p>';
     var right = '<div class="panel"><span class="lab" style="align-self:flex-start">What happened</span><ul class="tl">'+tl.map(function(x){ return '<li><span><b>'+esc(x[0])+'</b><span>'+esc(x[1])+'</span></span></li>'; }).join('')+'</ul></div>';
