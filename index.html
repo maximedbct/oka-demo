@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0F5F63"><link rel="apple-touch-icon" href="icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Doorstep"><meta name="apple-mobile-web-app-status-bar-style" content="default"><script>if('serviceWorker' in navigator && location.protocol==='https:'){navigator.serviceWorker.register('sw.js').catch(function(){});}</script><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Doorstep</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0F5F63"><link rel="apple-touch-icon" href="icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="OKA"><meta name="apple-mobile-web-app-status-bar-style" content="default"><script>if('serviceWorker' in navigator && location.protocol==='https:'){navigator.serviceWorker.register('sw.js').catch(function(){});}</script><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>OKA One Knock Away</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
@@ -173,7 +173,7 @@ label.lbl{font-size:15px;font-weight:700}
   function toast(m){ var t=$('toast'); t.textContent=m; t.hidden=false; clearTimeout(toastT); toastT=setTimeout(function(){ t.hidden=true; },3200); }
   function header(title, sub, back){
     $('hdr').innerHTML = (back?'<button type="button" class="iconbtn" id="hdr-back" aria-label="Back"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></button>':'')+
-      '<div><div class="brand">Doorstep</div><h1>'+esc(title)+'</h1>'+(sub?'<div class="sub">'+esc(sub)+'</div>':'')+'</div>';
+      '<div><div class="brand">OKA \u00b7 One Knock Away</div><h1>'+esc(title)+'</h1>'+(sub?'<div class="sub">'+esc(sub)+'</div>':'')+'</div>';
     if (back) $('hdr-back').onclick = back;
   }
   function recentConcern(r){ return S.alerts.some(function(a){ return a.res===r.id && a.score>0; }); }
@@ -312,9 +312,9 @@ label.lbl{font-size:15px;font-weight:700}
   function copyFor(a){
     var text = a.band;
     function fallback(){ S.copyText=text; render(); var b=$('copybox'); if(b){ b.focus(); b.select(); } toast('Select the text and copy it'); }
-    try { navigator.clipboard.writeText(text).then(function(){ toast('Copied. Paste it into the Doorstep Care Agent in Copilot.'); }, fallback); } catch(e){ fallback(); }
+    try { navigator.clipboard.writeText(text).then(function(){ toast('Copied. Paste it into the OKA Care Agent in Copilot.'); }, fallback); } catch(e){ fallback(); }
   }
-  function copyBox(){ return S.copyText ? '<section class="card"><label class="lbl" for="copybox">Text for the Doorstep Care Agent</label><textarea id="copybox" readonly style="min-height:110px;font-size:14px">'+esc(S.copyText)+'</textarea></section>' : ''; }
+  function copyBox(){ return S.copyText ? '<section class="card"><label class="lbl" for="copybox">Text for the OKA Care Agent</label><textarea id="copybox" readonly style="min-height:110px;font-size:14px">'+esc(S.copyText)+'</textarea></section>' : ''; }
 
   // ---------- Render ----------
   function render(){
@@ -334,7 +334,7 @@ label.lbl{font-size:15px;font-weight:700}
 
   function rBand(){
     var r = res(S.sel);
-    header('The Doorstep band', 'Demo: choose a person, then what the band detects');
+    header('The OKA band', 'Demo: choose a person, then what the band detects');
     var last = S.last ? byId(S.last) : null;
     if (last && last.res!==r.id) last = null;
     var html = '<div class="pills" role="group" aria-label="Resident">'+R.map(function(x){ return '<button type="button" class="pill" id="p-'+x.id+'" data-sel="'+x.id+'" aria-pressed="'+(x.id===S.sel)+'">'+esc(x.short)+'</button>'; }).join('')+'</div>';
@@ -347,11 +347,11 @@ label.lbl{font-size:15px;font-weight:700}
       html += heroFor(last)+
         '<section class="card"><h3>What the band sent</h3><ul class="tl">'+last.lines.map(function(l){ return '<li>'+esc(l)+'</li>'; }).join('')+'</ul>'+
         (last.why.length?'<span class="muted small">Why: '+esc(last.why.join(', '))+(last.score?' = '+last.score+' points (4+ visit, 2-3 call, 1 watch)':'')+'</span>':'')+'</section>'+
-        '<section class="card"><h3>What Doorstep did</h3><ul class="tl">'+last.log.map(function(l){ return '<li><span class="t">'+esc(l[0])+'</span><span>'+esc(l[1])+'</span></li>'; }).join('')+'</ul>'+
+        '<section class="card"><h3>What OKA did</h3><ul class="tl">'+last.log.map(function(l){ return '<li><span class="t">'+esc(l[0])+'</span><span>'+esc(l[1])+'</span></li>'; }).join('')+'</ul>'+
         ladderButtons(last)+'</section>'+
         '<div class="actions"><button type="button" class="btn plain sm" id="copy-last">Copy for agent</button>'+(last.knock&&!last.knockDone?'<button type="button" class="btn primary sm" id="go-visitor">Open the visitor app</button>':'')+'<button type="button" class="btn plain sm" id="go-nurse">Open nurse view</button></div>';
     }
-    html += copyBox()+'<p class="note">Fictional people. In the real product, the Doorstep Care Agent in Copilot makes these decisions and a nurse confirms.</p>';
+    html += copyBox()+'<p class="note">Fictional people. In the real product, the OKA Care Agent in Copilot makes these decisions and a nurse confirms.</p>';
     $('screen').innerHTML = html;
     bindAll('[data-sel]', function(b){ S.sel=b.getAttribute('data-sel'); S.copyText=null; render(); });
     bindAll('[data-k]', function(b){ S.copyText=null; trigger(b.getAttribute('data-k')); });
@@ -374,7 +374,7 @@ label.lbl{font-size:15px;font-weight:700}
     if (S.vscreen==='knock') return rKnock();
     if (S.vscreen==='note') return rNote();
     var reqs = knockOpen();
-    header('Tuesday round', R.length+' Doorstep residents · '+reqs.length+' knock request'+(reqs.length===1?'':'s'));
+    header('Tuesday round', R.length+' OKA residents · '+reqs.length+' knock request'+(reqs.length===1?'':'s'));
     var html = '';
     if (reqs.length){
       html += '<h2 class="h2">Please knock</h2>'+reqs.map(function(a){ var r=res(a.res);
@@ -417,7 +417,7 @@ label.lbl{font-size:15px;font-weight:700}
       '<div class="tags">'+TAGS.map(function(t){ return '<button type="button" class="tag" data-tag="'+t[0]+'" aria-pressed="'+(S.vtags.indexOf(t[0])>=0)+'">'+esc(t[1])+'</button>'; }).join('')+'</div>'+
       '<label class="lbl" for="n-text">Note</label><textarea id="n-text" placeholder="What did you notice?">'+esc(S.vnote)+'</textarea>'+
       '<button type="button" class="btn primary" id="n-send">Send note</button>';
-    $('n-999').onclick=function(){ var a=makeAlert(r,'sos'); a.signal='Visitor: emergency'; a.lines=['Visitor called 999 at '+a.time]; a.band='DOORSTEP OBSERVATION. Visitor at '+r.addr+': emergency, 999 called at '+a.time+'.'; S.alerts.unshift(a); S.vscreen='round'; render(); toast('999 logged. Stay with them if safe.'); };
+    $('n-999').onclick=function(){ var a=makeAlert(r,'sos'); a.signal='Visitor: emergency'; a.lines=['Visitor called 999 at '+a.time]; a.band='OKA OBSERVATION. Visitor at '+r.addr+': emergency, 999 called at '+a.time+'.'; S.alerts.unshift(a); S.vscreen='round'; render(); toast('999 logged. Stay with them if safe.'); };
     $('n-text').oninput=function(e){ S.vnote=e.target.value; };
     bindAll('[data-tag]', function(b){ var t=b.getAttribute('data-tag'), i=S.vtags.indexOf(t); if(i>=0) S.vtags.splice(i,1); else S.vtags.push(t); b.setAttribute('aria-pressed', String(i<0)); });
     $('n-mic').onclick=toggleRec;
@@ -432,7 +432,7 @@ label.lbl{font-size:15px;font-weight:700}
     if (/fridge|not eating|cold/.test(t)) social=true;
     if (a.score>0 && r.age>=85){ a.score+=1; a.why.push('Aged 85+ +1'); }
     a.signal='Visitor note'; a.lines=[S.vnote||'Quick tags: '+S.vtags.join(', ')];
-    a.band='DOORSTEP OBSERVATION. Visitor at '+r.addr+', '+a.time+'. '+r.name+'. '+(S.vnote||'')+(S.vtags.length?' Tags: '+S.vtags.join(', ')+'.':'');
+    a.band='OKA OBSERVATION. Visitor at '+r.addr+', '+a.time+'. '+r.name+'. '+(S.vnote||'')+(S.vtags.length?' Tags: '+S.vtags.join(', ')+'.':'');
     if (a.score>=4) bookVisit(a);
     else if (a.score>=2){ a.level='amber'; a.route='call'; a.title='Nurse phone call today'; }
     else if (scared){ a.level='amber'; a.route='council'; a.title='Council safeguarding team'; }
