@@ -235,10 +235,11 @@ details.raw pre{white-space:pre-wrap;font:inherit;font-size:12.5px;background:va
     if (!route) return null;
     // level = the first colour word in the route line
     var lv = route.match(/\b(RED|AMBER|GREEN)\b/i), lvl = lv ? lv[1].toLowerCase() : 'amber';
-    var urgent = /urgent/i.test(route);
+    var both = route + ' ' + who;
+    var urgent = /urgent|fall ladder|\bnow\b/i.test(both);
     // plain-English actions
     var r = route.toLowerCase(), acts = [], ifs = [];
-    var cond999 = /if[^.]*\b999\b/i.test(route) && lvl!=='red';
+    var cond999 = /if[^.]*\b999\b/i.test(both) && lvl!=='red';
     if (/\b999\b/.test(r) && !cond999) acts.push('Call 999 now');
     if (/visitor|knock/.test(r) || (/knock/.test(who.toLowerCase()))) acts.push('Someone knocks on the door');
     if (/falls? pick-?up/.test(r)) acts.push('Falls team comes to help');
@@ -254,6 +255,8 @@ details.raw pre{white-space:pre-wrap;font:inherit;font-size:12.5px;background:va
     var why = get('WHY');
     var chips = (why.match(/[^=;.]*?\+\s*\d+/g) || []).map(function(x){ return x.replace(/^[\s,;]+/,'').trim(); });
     var tot = why.match(/=\s*(\d+)/);
+    // only show score chips when there is a real score; otherwise show the agent's sentence
+    if (!tot || tot[1]==='0' || chips.some(function(c){ return /because|^\d/i.test(c); })) chips = [];
     var msg = get('MESSAGE FOR THE OKA APP');
     return { lvl:lvl, urgent:urgent, acts:acts, ifs:ifs, route:route, who:who, why:why, chips:chips, total: tot?tot[1]:null,
       change:get('CHANGE FROM USUAL'), family:get('FAMILY OR KEY HOLDER'),
@@ -361,7 +364,7 @@ details.raw pre{white-space:pre-wrap;font:inherit;font-size:12.5px;background:va
         (d.who?'<div><span class="lab">Who</span><span class="clamp">'+esc(d.who)+'</span></div>':'')+
       '</div>'+
       '<div class="card"><span class="lab">Why</span>'+(d.chips.length ? '<div class="chips">'+d.chips.map(function(c){ return '<span>'+esc(c)+'</span>'; }).join('')+(d.total?'<span class="total">= '+esc(d.total)+' points</span>':'')+'</div>' : '<span class="clamp">'+esc(d.why||'Not given')+'</span>')+'</div>'+
-      '<p class="hint" style="align-self:flex-start">Points are counted against this person\'s own normal, not general numbers.</p>';
+      (d.chips.length?'<p class="hint" style="align-self:flex-start">Points are counted against this person\'s own normal, not general numbers.</p>':'');
     return {left:left, right:right, ok:true};
   }
 
@@ -381,7 +384,7 @@ details.raw pre{white-space:pre-wrap;font:inherit;font-size:12.5px;background:va
     var left = '<p class="eyebrow">Step '+(S.i+1)+' · The nurse</p><h2>The nurse already has the full picture.</h2>'+
       '<p class="small">The agent writes the handover, so the nurse doesn\'t start from scratch. A call takes minutes.</p>'+
       '<p class="hint">Tap what the nurse finds.</p>';
-    var right = '<div class="panel">'+phone('nurse','OKA · Nurse team', '<div class="notif"><b>'+esc((person().id==='own'?'New case':person().name)+' · '+(d.acts.filter(function(a){ return /nurse|999|falls/i.test(a); })[0]||'Follow up today'))+'</b>'+(vis?'<span class="mut">'+esc(vis)+'</span>':'')+'</div>'+
+    var right = '<div class="panel">'+phone('nurse','OKA · Nurse team', '<div class="notif"><b>'+esc((person().id==='own'?'New case':person().name)+' · '+((S.v==='none' && d.ifs.length) ? '999 called: still no movement' : S.v==='floor' ? '999 called by the visitor' : (d.acts.filter(function(a){ return /nurse|999|falls/i.test(a); })[0]||'Follow up today')))+'</b>'+(vis?'<span class="mut">'+esc(vis)+'</span>':'')+'</div>'+
       (d.handover.length?'<ul class="ho">'+d.handover.map(function(h){ var m=h.match(/^([^:]{2,22}):\s*(.*)$/); return '<li>'+(m?'<b>'+esc(m[1])+':</b> '+esc(m[2]):esc(h))+'</li>'; }).join('')+'</ul>':'')+
       choices('n',[{v:'ok',t:'Done: safe at home',c:'go'},{v:'hosp',t:'Needs hospital'}]))+'</div>';
     return {left:left, right:right, ok: !!S.n, bind:bindChoices};
@@ -390,11 +393,12 @@ details.raw pre{white-space:pre-wrap;font:inherit;font-size:12.5px;background:va
   function rResult(){
     var d = S.d, p = person();
     var home = S.n ? S.n==='ok' : S.v ? S.v==='ok' : true;
-    var title = S.v==='floor' ? 'Found fast. Help on the way.' : d.lvl==='green' ? 'No false alarm.' : home ? 'They stay at home.' : 'The right help, fast.';
-    var sub = S.v==='floor' ? 'Found within minutes, not hours later.' : d.lvl==='green' ? 'The agent knew this was normal for them. Nobody was disturbed.' : 'No needless ambulance, but nothing was ignored.';
+    var called999 = S.v==='floor' || (S.v==='none' && d.ifs.length);
+    var title = called999 ? 'Found fast. Help on the way.' : d.lvl==='green' ? 'No false alarm.' : home ? 'They stay at home.' : 'The right help, fast.';
+    var sub = called999 ? 'Found within minutes, not hours later.' : d.lvl==='green' ? 'The agent knew this was normal for them. Nobody was disturbed.' : 'No needless ambulance, but nothing was ignored.';
     var tl = [['Band', p.id==='own'?'Sent the alert':p.event],['OKA agent (Copilot)', d.acts.join(' · ')]];
-    if (d.msg) tl.push(['Visitor', {ok:'Knocked: they look OK',none:'Knocked: no answer',floor:'Found them on the floor and called 999'}[S.v]||'Knocked']);
-    if (d.handover.length || d.lvl==='red') tl.push(['Nurse', S.n==='hosp'?'Sent them to hospital':'Checked: safe at home']);
+    if (d.msg) tl.push(['Visitor', {ok:'Knocked: they look OK',none: d.ifs.length?'No answer, so 999 was called at the time limit':'Knocked: no answer',floor:'Found them on the floor and called 999'}[S.v]||'Knocked']);
+    if (d.handover.length || d.lvl==='red') tl.push(['Nurse', called999 ? (S.n==='hosp'?'Ambulance took them to hospital':'Followed up after the ambulance crew') : S.n==='hosp'?'Sent them to hospital':'Checked: safe at home']);
     var left = '<p class="eyebrow">Result</p><div class="endcard"><h2>'+esc(title)+'</h2><p>'+esc(sub)+'</p></div>'+
       '<p class="small">The decision came from our agent in Microsoft Copilot. In a real service, Power Automate would pass alerts and answers automatically.</p>';
     var right = '<div class="panel"><span class="lab" style="align-self:flex-start">What happened</span><ul class="tl">'+tl.map(function(x){ return '<li><span><b>'+esc(x[0])+'</b><span>'+esc(x[1])+'</span></span></li>'; }).join('')+'</ul></div>';
