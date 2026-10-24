@@ -135,6 +135,33 @@ h2.story{font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1.2;ma
 .linkish{align-self:flex-start;background:none;border:0;color:var(--brand-ink);font-weight:700;cursor:pointer;font-size:14px;min-height:44px;padding:0}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(92px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:12px 16px;border-radius:10px;font-size:14px;max-width:calc(100% - 40px);z-index:20}
 .note{font-size:12px;color:var(--muted);margin:0}
+/* live mode */
+.livecta{display:flex;gap:14px;align-items:center;text-align:left;width:100%;background:var(--fg);color:var(--bg);border:0;border-radius:16px;padding:18px;cursor:pointer}
+.livecta .ri{background:var(--brand);color:#fff;border:0}
+.livecta b{display:block;font-size:17px;font-weight:700}
+.livecta span span{font-size:14px;opacity:.75}
+.livecta > span:nth-child(2){flex:1}
+.dot{display:inline-block;width:8px;height:8px;border-radius:99px;background:#2BD576;margin-right:6px;vertical-align:middle}
+.steps3{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none}
+.steps3 li{display:flex;gap:12px;align-items:flex-start;font-size:15px}
+.steps3 .n{width:26px;height:26px;border-radius:99px;background:var(--soft2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0}
+.steps3 li.on .n{background:var(--brand);color:#fff}
+.alerts{display:flex;flex-direction:column;gap:8px;width:100%}
+.alertbtn{text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer;font-size:14px;width:100%}
+.alertbtn b{display:block;font-size:15px}
+.alertbtn span{color:var(--muted)}
+.alertbtn[aria-pressed="true"]{border-color:var(--brand);box-shadow:0 0 0 2px var(--brand)}
+textarea{width:100%;min-height:120px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font:inherit;font-size:14px;padding:12px;resize:vertical}
+.row{display:flex;gap:10px;flex-wrap:wrap;width:100%}
+.btn{min-height:48px;border-radius:12px;border:1px solid var(--line);background:var(--bg);font-weight:700;font-size:15px;cursor:pointer;padding:0 16px;flex:1;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;color:var(--fg)}
+.btn.dark{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.src{font-size:12px;font-weight:700;color:var(--muted);display:flex;align-items:center;gap:6px}
+.detail{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px}
+.detail b{display:block;font-size:12px;color:var(--muted);margin-bottom:2px}
+.raw{width:100%;font-size:13px}
+.raw summary{cursor:pointer;color:var(--muted);font-weight:600}
+.raw pre{white-space:pre-wrap;font:inherit;font-size:13px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px;margin:8px 0 0}
 @media (prefers-reduced-motion: reduce){.pod.alert,.pod.alert .led{animation:none}}
 </style>
 
@@ -263,6 +290,95 @@ h2.story{font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1.2;ma
     return '<div class="bar"><b>'+esc(label)+'</b><div class="track"><span class="b usual" style="width:'+usual+'%"></span><span class="lab">'+esc(ul)+'</span><span class="b now" style="width:'+Math.max(now,2)+'%"></span><span class="lab">'+esc(nl)+'</span></div></div>';
   }
 
+
+  // ---------- LIVE MODE: the real OKA Care Agent drives the app ----------
+  var AGENT_URL = 'https://m365.cloud.microsoft/chat';
+  var LIVE_ALERTS = [
+    {who:'Mrs Asha Patel, 84', what:'Fall, pressed "I\'m OK"', t:'BAND ALERT. Mrs Asha Patel (band DS-001). 07:42 fall detected. Person pressed "I\'m OK" after 40 seconds. Steps since 07:42: 35. Heart rate 96. Now 07:43.'},
+    {who:'Mr Daniel Okafor, 79', what:'Fall, no answer', t:'BAND ALERT. Mr Daniel Okafor (band DS-002). 06:15 fall detected. No response to "Are you OK?" after 60 seconds. No movement since. Now 06:16.'},
+    {who:'Mrs Halina Nowak, 87', what:'Slowly doing less', t:'BAND ALERT. Mrs Halina Nowak (band DS-004). Steps yesterday 900, today 600 at 16:00. Slept 11 hours last night and 10.5 the night before. Medication reminder not acknowledged 2 days in a row.'},
+    {who:'Mrs June Hughes, 91', what:'Band not worn', t:'BAND ALERT. Mrs June Hughes (band DS-003). Band not worn since 21:30 yesterday. Now 11:00. No data.'},
+    {who:'Mr Tom Williams, 82', what:'New irregular heartbeat', t:'BAND ALERT. Mr Tom Williams (band DS-007). Irregular heart rhythm alert at 10:05. Steps today 3,200 by 11:00. He answered the check-in: "I feel fine."'},
+    {who:'Mr George Turner, 93', what:'Fell, can\'t get up', t:'BAND ALERT. Mr George Turner (band DS-008). 14:20 fall detected. He pressed SOS and said "I\'m not hurt but I can\'t get up."'}
+  ];
+  var L = {alert:null, own:'', raw:'', d:null, v:null, n:null};
+  var LABELS = ['ALERT','ROUTE','WHO ACTS','WHY','CHANGE FROM USUAL','MESSAGE FOR THE OKA APP','MESSAGE FOR THE DOORSTEP APP','HANDOVER FOR THE NURSE','FAMILY OR KEY HOLDER','FLAGS'];
+  function parseAgent(txt){
+    var out = {}, curK = null;
+    txt.replace(/\r/g,'').split('\n').forEach(function(line){
+      var clean = line.replace(/\*\*|__|`/g,'').replace(/^\s*(#+|[-*•>]|\d+\.)\s*/,'').trim();
+      var hit = null;
+      LABELS.forEach(function(l){ if (!hit && clean.toUpperCase().indexOf(l)===0){ var rest = clean.slice(l.length); if (/^\s*(\([^)]*\))?\s*[:\-–]/.test(rest) || rest.trim()==='') hit = l; } });
+      if (hit){
+        if (hit==='MESSAGE FOR THE DOORSTEP APP') hit='MESSAGE FOR THE OKA APP';
+        curK = hit;
+        var rest = clean.slice(hit==='MESSAGE FOR THE OKA APP' && clean.toUpperCase().indexOf('DOORSTEP')>0 ? 'MESSAGE FOR THE DOORSTEP APP'.length : hit.length).replace(/^\s*(\([^)]*\))?\s*[:\-–]\s*/,'');
+        out[curK] = rest ? [rest] : [];
+      } else if (curK && clean){ out[curK].push(line.replace(/\*\*|__|`/g,'').trim().replace(/^[-*•]\s*/,'')); }
+    });
+    var get = function(k){ return (out[k]||[]).join(' ').trim(); };
+    var route = get('ROUTE'), lvl = /\bRED\b/i.test(route)?'red':/\bAMBER\b/i.test(route)?'amber':/\bGREEN\b/i.test(route)?'green':'amber';
+    var action = route.replace(/^\s*(RED|AMBER|GREEN)\s*(\([^)]*\))?\s*[-–:]?\s*/i,'') || route;
+    var msg = get('MESSAGE FOR THE OKA APP');
+    var why = get('WHY');
+    return { ok: !!route, lvl:lvl, action:action, who:get('WHO ACTS'), why:why,
+      whyChips: why ? (why.match(/[^=;]*?\+\s*\d+|=\s*\d+/g) || [why]).map(function(x){return x.replace(/^[\s,;]+/,'').trim();}).filter(Boolean).slice(0,8) : [],
+      change:get('CHANGE FROM USUAL'), alert:get('ALERT'),
+      msg: (/no visitor needed/i.test(msg) || !msg) ? '' : msg,
+      handover:(out['HANDOVER FOR THE NURSE']||[]).filter(function(x){ return x && !/^\(?only for/i.test(x); }),
+      family:get('FAMILY OR KEY HOLDER'), flags:get('FLAGS') };
+  }
+  function alertText(){ return L.alert===-1 ? L.own.trim() : (L.alert!=null ? LIVE_ALERTS[L.alert].t : ''); }
+  function rLive(){
+    $('home').hidden=false; $('nav').hidden=true;
+    var phase = L.d ? 3 : alertText() ? 2 : 1;
+    var head = '<p class="eyebrow"><span class="dot"></span>Live with the real agent</p><h2 class="story">The OKA Care Agent decides. The app follows.</h2>'+
+      '<ol class="steps3">'+[['Pick a band alert','or write your own'],['Paste it into the OKA Care Agent in Copilot','then copy its whole answer'],['Paste the answer here','the app shows what the agent decided']].map(function(x,i){ return '<li class="'+(phase===i+1?'on':'')+'"><span class="n">'+(i+1)+'</span><span><b>'+x[0]+'</b><br><span class="small">'+x[1]+'</span></span></li>'; }).join('')+'</ol>';
+    var html = head;
+    if (!L.d){
+      html += '<div class="stage"><div class="alerts">'+LIVE_ALERTS.map(function(a,i){ return '<button type="button" class="alertbtn" data-al="'+i+'" aria-pressed="'+(L.alert===i)+'"><b>'+esc(a.who)+'</b><span>'+esc(a.what)+'</span></button>'; }).join('')+
+        '<button type="button" class="alertbtn" data-al="-1" aria-pressed="'+(L.alert===-1)+'"><b>Write your own alert</b><span>Let the jury try one</span></button></div>'+
+        (L.alert===-1?'<textarea id="own" placeholder="BAND ALERT. Mr Kiran Shah (band DS-005). ...">'+esc(L.own)+'</textarea>':'')+
+        '<div class="row"><button type="button" class="btn dark" id="lcopy"'+(alertText()?'':' disabled')+'>Copy alert</button><a class="btn" href="'+AGENT_URL+'" target="_blank" rel="noopener">Open Copilot</a></div></div>'+
+        '<div class="stage"><textarea id="ans" placeholder="Paste the OKA Care Agent\'s full answer here (ROUTE, WHO ACTS, WHY...)">'+esc(L.raw)+'</textarea>'+
+        '<div class="row"><button type="button" class="btn dark" id="limp">Import OKA decision</button></div></div>';
+      $('screen').innerHTML = html;
+      Array.prototype.forEach.call(document.querySelectorAll('[data-al]'), function(b){ b.onclick=function(){ L.alert=+b.getAttribute('data-al'); rLive(); }; });
+      if ($('own')) $('own').oninput=function(){ L.own=this.value; $('lcopy').disabled=!L.own.trim(); };
+      $('ans').oninput=function(){ L.raw=this.value; };
+      $('lcopy').onclick=function(){ copy(alertText()); };
+      $('limp').onclick=function(){ L.raw=$('ans').value; if(!L.raw.trim()){ toast('Paste the agent\'s answer first.'); return; } var d=parseAgent(L.raw); if(!d.ok){ toast('No ROUTE found. Copy the agent\'s whole answer.'); return; } L.d=d; L.v=null; L.n=null; rLive(); window.scrollTo(0,0); };
+      return;
+    }
+    var d = L.d, tag = {red:'Emergency',amber:'Act today',green:'No action'}[d.lvl];
+    html += '<div class="stage"><span class="src">'+ri('oka')+'Decided by OKA Care Agent · Microsoft 365 Copilot</span>'+
+      '<div class="okacard">'+(d.alert?'<div class="knows"><b>Alert</b><span>'+esc(d.alert)+'</span></div>':'')+
+      '<div class="decision '+d.lvl+'"><small>'+tag+'</small><b>'+esc(d.action)+'</b>'+(d.who?'<span>'+esc(d.who)+'</span>':'')+'</div>'+
+      (d.whyChips.length?'<div class="why">'+d.whyChips.map(function(w){return '<span>'+esc(w)+'</span>';}).join('')+'</div>':'')+
+      (d.change?'<div class="detail"><b>Change from usual</b>'+esc(d.change)+'</div>':'')+'</div></div>';
+    if (d.msg){
+      html += '<div style="display:flex;gap:10px;align-items:center">'+who('visitor')+'<span class="time">Sent to the visitor\'s phone</span></div>'+
+        '<div class="stage">'+phone('visitor','OKA · Visitor', notif('Please knock', d.msg, 'From the OKA Care Agent')+
+        lchoices('v',[{v:'ok',t:'Seen, they look OK',cls:'go'},{v:'none',t:'No answer'},{v:'floor',t:'On the floor: calling 999',cls:'stop'}]))+'</div>';
+    }
+    if (d.handover.length || d.lvl==='red'){
+      html += '<div style="display:flex;gap:10px;align-items:center">'+who('nurse')+'<span class="time">Handover written by the agent</span></div>'+
+        '<div class="stage">'+phone('nurse','OKA · Nurse team', notif(d.action, d.who||'', L.v?('Visitor: '+{ok:'seen, looks OK',none:'no answer',floor:'on the floor, 999 called'}[L.v]):'')+
+        (d.handover.length?'<ul class="ho">'+d.handover.map(function(h){ var m=h.match(/^([^:]{2,22}):\s*(.*)$/); return '<li>'+(m?'<b>'+esc(m[1])+':</b> '+esc(m[2]):esc(h))+'</li>'; }).join('')+'</ul>':'')+
+        lchoices('n',[{v:'ok',t:'Done: safe at home',cls:'go'},{v:'hosp',t:'Needs hospital'}]))+'</div>';
+    }
+    if (d.family) html += '<div class="detail"><b>Family or key holder</b>'+esc(d.family)+'</div>';
+    if (d.flags && !/^none\.?$/i.test(d.flags)) html += '<div class="detail"><b>Flags</b>'+esc(d.flags)+'</div>';
+    html += '<details class="raw"><summary>See the agent\'s full answer</summary><pre>'+esc(L.raw)+'</pre></details>'+
+      '<div class="row"><button type="button" class="btn dark" id="lnew">Try another alert</button></div>';
+    $('screen').innerHTML = html;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-lc]'), function(b){ b.onclick=function(){ var v=b.getAttribute('data-lc').split('|'); L[v[0]]=v[1]; rLive(); }; });
+    $('lnew').onclick=function(){ L={alert:null, own:'', raw:'', d:null, v:null, n:null}; rLive(); window.scrollTo(0,0); };
+  }
+  function lchoices(key, opts){
+    return opts.map(function(o){ return '<button type="button" class="choice '+(o.cls||'')+'" data-lc="'+key+'|'+o.v+'" aria-pressed="'+(L[key]===o.v)+'">'+esc(o.t)+'</button>'; }).join('');
+  }
+
   // ---------- state ----------
   var S = {story:null, step:0, ch:{}};
   function cur(){ return STORIES.filter(function(s){return s.id===S.story;})[0]; }
@@ -270,6 +386,7 @@ h2.story{font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1.2;ma
   function val(x){ return typeof x==='function'?x():x; }
 
   function render(){
+    if (S.story==='live') return rLive();
     var st = cur();
     $('home').hidden = !st; $('nav').hidden = !st;
     if (!st) return rHome();
@@ -297,9 +414,11 @@ h2.story{font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1.2;ma
       '<div class="roles">'+
         role('band','The band','Worn by the person')+role('oka','OKA','The AI that decides')+role('visitor','A visitor','Postie, carer, neighbour')+role('nurse','The nurse','Steps in when needed')+
       '</div>'+
-      '<p class="eyebrow" style="margin-top:8px">See it in action</p>'+
+      '<button type="button" class="livecta" id="golive">'+ri('oka')+'<span><b>Try it with the real AI agent</b><span>Our OKA Care Agent in Microsoft Copilot makes the decision. The app shows it.</span></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>'+
+      '<p class="eyebrow" style="margin-top:8px">Or follow a guided story</p>'+
       '<div class="stories">'+STORIES.map(function(s){ return '<button type="button" class="storybtn" data-story="'+s.id+'"><span class="num">'+s.n+'</span><span><b>'+esc(s.title)+'</b><span>'+esc(s.teaser)+'</span></span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>'; }).join('')+'</div>'+
       '<p class="note">Prototype with fictional people and services. DHSC / Microsoft AI Challenge, Group 5.</p>';
+    $('golive').onclick=function(){ S.story='live'; render(); window.scrollTo(0,0); };
     Array.prototype.forEach.call(document.querySelectorAll('[data-story]'), function(b){ b.onclick=function(){ S.story=b.getAttribute('data-story'); S.step=0; S.ch={}; render(); window.scrollTo(0,0); }; });
   }
   function role(r, t, s){ return '<div class="role">'+ri(r)+'<div><b>'+esc(t)+'</b><small>'+esc(s)+'</small></div></div>'; }
