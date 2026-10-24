@@ -301,7 +301,7 @@ textarea{width:100%;min-height:120px;border-radius:12px;border:1px solid var(--l
     {who:'Mr Tom Williams, 82', what:'New irregular heartbeat', t:'BAND ALERT. Mr Tom Williams (band DS-007). Irregular heart rhythm alert at 10:05. Steps today 3,200 by 11:00. He answered the check-in: "I feel fine."'},
     {who:'Mr George Turner, 93', what:'Fell, can\'t get up', t:'BAND ALERT. Mr George Turner (band DS-008). 14:20 fall detected. He pressed SOS and said "I\'m not hurt but I can\'t get up."'}
   ];
-  var L = {alert:null, own:'', raw:'', d:null, v:null, n:null};
+  var L = {alert:null, own:'', raw:'', d:null, v:null, n:null, step:0};
   var LABELS = ['ALERT','ROUTE','WHO ACTS','WHY','CHANGE FROM USUAL','MESSAGE FOR THE OKA APP','MESSAGE FOR THE DOORSTEP APP','HANDOVER FOR THE NURSE','FAMILY OR KEY HOLDER','FLAGS'];
   function parseAgent(txt){
     var out = {}, curK = null;
@@ -329,51 +329,74 @@ textarea{width:100%;min-height:120px;border-radius:12px;border:1px solid var(--l
       family:get('FAMILY OR KEY HOLDER'), flags:get('FLAGS') };
   }
   function alertText(){ return L.alert===-1 ? L.own.trim() : (L.alert!=null ? LIVE_ALERTS[L.alert].t : ''); }
+  function liveSteps(){
+    var st=[{k:'pick',r:'band',lab:'Band'},{k:'ask',r:'oka',lab:'Ask agent'},{k:'dec',r:'oka',lab:'Decision'}];
+    if (L.d && L.d.msg) st.push({k:'vis',r:'visitor',lab:'Visitor'});
+    if (L.d && (L.d.handover.length || L.d.lvl==='red')) st.push({k:'nur',r:'nurse',lab:'Nurse'});
+    return st;
+  }
   function rLive(){
-    $('home').hidden=false; $('nav').hidden=true;
-    var phase = L.d ? 3 : alertText() ? 2 : 1;
-    var head = '<p class="eyebrow"><span class="dot"></span>Live with the real agent</p><h2 class="story">The OKA Care Agent decides. The app follows.</h2>'+
-      '<ol class="steps3">'+[['Pick a band alert','or write your own'],['Paste it into the OKA Care Agent in Copilot','then copy its whole answer'],['Paste the answer here','the app shows what the agent decided']].map(function(x,i){ return '<li class="'+(phase===i+1?'on':'')+'"><span class="n">'+(i+1)+'</span><span><b>'+x[0]+'</b><br><span class="small">'+x[1]+'</span></span></li>'; }).join('')+'</ol>';
-    var html = head;
-    if (!L.d){
-      html += '<div class="stage"><div class="alerts">'+LIVE_ALERTS.map(function(a,i){ return '<button type="button" class="alertbtn" data-al="'+i+'" aria-pressed="'+(L.alert===i)+'"><b>'+esc(a.who)+'</b><span>'+esc(a.what)+'</span></button>'; }).join('')+
+    $('home').hidden=false; $('nav').hidden=false;
+    var steps=liveSteps();
+    if (L.step>=steps.length) return rLiveEnd(steps);
+    var k=steps[L.step].k, d=L.d, html='', say='', sub='', who_='', canNext=true;
+    var stepper='<div class="stepper">'+steps.map(function(x,i){ return '<div class="st'+(i===L.step?' on':i<L.step?' done':'')+'"><span>'+esc(x.lab)+'</span></div>'; }).join('')+'</div>';
+    if (k==='pick'){
+      who_=who('band'); say='Whose band sends an alert?'; sub='Pick a person, or write your own alert.';
+      html='<div class="alerts">'+LIVE_ALERTS.map(function(a,i){ return '<button type="button" class="alertbtn" data-al="'+i+'" aria-pressed="'+(L.alert===i)+'"><b>'+esc(a.who)+'</b><span>'+esc(a.what)+'</span></button>'; }).join('')+
         '<button type="button" class="alertbtn" data-al="-1" aria-pressed="'+(L.alert===-1)+'"><b>Write your own alert</b><span>Let the jury try one</span></button></div>'+
-        (L.alert===-1?'<textarea id="own" placeholder="BAND ALERT. Mr Kiran Shah (band DS-005). ...">'+esc(L.own)+'</textarea>':'')+
-        '<div class="row"><button type="button" class="btn dark" id="lcopy"'+(alertText()?'':' disabled')+'>Copy alert</button><a class="btn" href="'+AGENT_URL+'" target="_blank" rel="noopener">Open Copilot</a></div></div>'+
-        '<div class="stage"><textarea id="ans" placeholder="Paste the OKA Care Agent\'s full answer here (ROUTE, WHO ACTS, WHY...)">'+esc(L.raw)+'</textarea>'+
-        '<div class="row"><button type="button" class="btn dark" id="limp">Import OKA decision</button></div></div>';
-      $('screen').innerHTML = html;
-      Array.prototype.forEach.call(document.querySelectorAll('[data-al]'), function(b){ b.onclick=function(){ L.alert=+b.getAttribute('data-al'); rLive(); }; });
-      if ($('own')) $('own').oninput=function(){ L.own=this.value; $('lcopy').disabled=!L.own.trim(); };
-      $('ans').oninput=function(){ L.raw=this.value; };
-      $('lcopy').onclick=function(){ copy(alertText()); };
-      $('limp').onclick=function(){ L.raw=$('ans').value; if(!L.raw.trim()){ toast('Paste the agent\'s answer first.'); return; } var d=parseAgent(L.raw); if(!d.ok){ toast('No ROUTE found. Copy the agent\'s whole answer.'); return; } L.d=d; L.v=null; L.n=null; rLive(); window.scrollTo(0,0); };
-      return;
-    }
-    var d = L.d, tag = {red:'Emergency',amber:'Act today',green:'No action'}[d.lvl];
-    html += '<div class="stage"><span class="src">'+ri('oka')+'Decided by OKA Care Agent · Microsoft 365 Copilot</span>'+
-      '<div class="okacard">'+(d.alert?'<div class="knows"><b>Alert</b><span>'+esc(d.alert)+'</span></div>':'')+
-      '<div class="decision '+d.lvl+'"><small>'+tag+'</small><b>'+esc(d.action)+'</b>'+(d.who?'<span>'+esc(d.who)+'</span>':'')+'</div>'+
-      (d.whyChips.length?'<div class="why">'+d.whyChips.map(function(w){return '<span>'+esc(w)+'</span>';}).join('')+'</div>':'')+
-      (d.change?'<div class="detail"><b>Change from usual</b>'+esc(d.change)+'</div>':'')+'</div></div>';
-    if (d.msg){
-      html += '<div style="display:flex;gap:10px;align-items:center">'+who('visitor')+'<span class="time">Sent to the visitor\'s phone</span></div>'+
-        '<div class="stage">'+phone('visitor','OKA · Visitor', notif('Please knock', d.msg, 'From the OKA Care Agent')+
-        lchoices('v',[{v:'ok',t:'Seen, they look OK',cls:'go'},{v:'none',t:'No answer'},{v:'floor',t:'On the floor: calling 999',cls:'stop'}]))+'</div>';
-    }
-    if (d.handover.length || d.lvl==='red'){
-      html += '<div style="display:flex;gap:10px;align-items:center">'+who('nurse')+'<span class="time">Handover written by the agent</span></div>'+
-        '<div class="stage">'+phone('nurse','OKA · Nurse team', notif(d.action, d.who||'', L.v?('Visitor: '+{ok:'seen, looks OK',none:'no answer',floor:'on the floor, 999 called'}[L.v]):'')+
+        (L.alert===-1?'<textarea id="own" placeholder="BAND ALERT. Mr Kiran Shah (band DS-005). ...">'+esc(L.own)+'</textarea>':'');
+      canNext=!!alertText();
+    } else if (k==='ask'){
+      who_=who('oka','OKA agent'); say='Ask the OKA Care Agent in Copilot.'; sub='Copy the alert, paste it in Copilot, then paste the agent\'s full answer back here.';
+      html='<div class="detail"><b>Band alert</b>'+esc(alertText())+'</div>'+
+        '<div class="row"><button type="button" class="btn dark" id="lcopy">1. Copy alert</button><a class="btn" href="'+AGENT_URL+'" target="_blank" rel="noopener">2. Open Copilot</a></div>'+
+        '<textarea id="ans" placeholder="3. Paste the agent\'s full answer here">'+esc(L.raw)+'</textarea>';
+      canNext=!!L.raw.trim();
+    } else if (k==='dec'){
+      var tag={red:'Emergency',amber:'Act today',green:'No action'}[d.lvl];
+      who_=who('oka','OKA agent'); say='The agent has decided.'; sub='Everything below comes from its answer in Microsoft Copilot.';
+      html='<div class="okacard"><div class="decision '+d.lvl+'"><small>'+tag+'</small><b>'+esc(d.action)+'</b>'+(d.who?'<span>'+esc(d.who)+'</span>':'')+'</div>'+
+        (d.whyChips.length?'<div class="why">'+d.whyChips.map(function(w){return '<span>'+esc(w)+'</span>';}).join('')+'</div>':'')+
+        (d.change?'<div class="detail"><b>Change from usual</b>'+esc(d.change)+'</div>':'')+
+        (d.family?'<div class="detail"><b>Family or key holder</b>'+esc(d.family)+'</div>':'')+'</div>';
+    } else if (k==='vis'){
+      who_=who('visitor'); say='The visitor gets the agent\'s message on their phone.'; sub='They only knock, look and report.';
+      html=phone('visitor','OKA · Visitor', notif('Please knock', d.msg, 'Written by the OKA agent')+
+        lchoices('v',[{v:'ok',t:'Seen, they look OK',cls:'go'},{v:'none',t:'No answer'},{v:'floor',t:'On the floor: calling 999',cls:'stop'}]));
+    } else if (k==='nur'){
+      who_=who('nurse'); say='The nurse gets the agent\'s handover.'; sub='No need to start from scratch.';
+      html=phone('nurse','OKA · Nurse team', notif(d.action, d.who||'', L.v?('Visitor: '+{ok:'seen, looks OK',none:'no answer',floor:'on the floor, 999 called'}[L.v]):'')+
         (d.handover.length?'<ul class="ho">'+d.handover.map(function(h){ var m=h.match(/^([^:]{2,22}):\s*(.*)$/); return '<li>'+(m?'<b>'+esc(m[1])+':</b> '+esc(m[2]):esc(h))+'</li>'; }).join('')+'</ul>':'')+
-        lchoices('n',[{v:'ok',t:'Done: safe at home',cls:'go'},{v:'hosp',t:'Needs hospital'}]))+'</div>';
+        lchoices('n',[{v:'ok',t:'Done: safe at home',cls:'go'},{v:'hosp',t:'Needs hospital'}]));
     }
-    if (d.family) html += '<div class="detail"><b>Family or key holder</b>'+esc(d.family)+'</div>';
-    if (d.flags && !/^none\.?$/i.test(d.flags)) html += '<div class="detail"><b>Flags</b>'+esc(d.flags)+'</div>';
-    html += '<details class="raw"><summary>See the agent\'s full answer</summary><pre>'+esc(L.raw)+'</pre></details>'+
-      '<div class="row"><button type="button" class="btn dark" id="lnew">Try another alert</button></div>';
-    $('screen').innerHTML = html;
+    $('screen').innerHTML='<p class="eyebrow"><span class="dot"></span>Live with the real agent</p>'+stepper+
+      '<div style="display:flex;gap:10px;align-items:center">'+who_+'</div>'+
+      '<p class="say">'+esc(say)+(sub?'<small>'+esc(sub)+'</small>':'')+'</p>'+
+      '<div class="stage">'+html+'</div>';
+    Array.prototype.forEach.call(document.querySelectorAll('[data-al]'), function(b){ b.onclick=function(){ L.alert=+b.getAttribute('data-al'); L.raw=''; L.d=null; rLive(); }; });
     Array.prototype.forEach.call(document.querySelectorAll('[data-lc]'), function(b){ b.onclick=function(){ var v=b.getAttribute('data-lc').split('|'); L[v[0]]=v[1]; rLive(); }; });
-    $('lnew').onclick=function(){ L={alert:null, own:'', raw:'', d:null, v:null, n:null}; rLive(); window.scrollTo(0,0); };
+    if ($('own')) $('own').oninput=function(){ L.own=this.value; $('next').disabled=!L.own.trim(); };
+    if ($('lcopy')) $('lcopy').onclick=function(){ copy(alertText()); };
+    if ($('ans')) $('ans').oninput=function(){ L.raw=this.value; $('next').disabled=!L.raw.trim(); };
+    $('back').disabled=false;
+    $('next').disabled=!canNext;
+    $('next').textContent = k==='ask' ? 'Show the decision' : (L.step===steps.length-1 ? 'Finish' : 'Next');
+  }
+  function rLiveEnd(steps){
+    var d=L.d;
+    $('screen').innerHTML='<p class="eyebrow"><span class="dot"></span>Live with the real agent</p>'+
+      '<div class="stepper">'+steps.map(function(x){ return '<div class="st done"><span>'+esc(x.lab)+'</span></div>'; }).join('')+'</div>'+
+      '<div class="endcard"><h2>Decided by our AI agent.</h2><p>The band sent the alert. The OKA Care Agent in Microsoft Copilot decided. The app put it on the right phones.</p><ul class="ticks">'+
+      ['Route: '+d.action, d.who?('Who acts: '+d.who):'', d.msg?'The visitor got the agent\'s message':'No visitor needed', (d.handover.length?'The nurse got the agent\'s handover':'')].filter(Boolean).map(function(l){ return '<li>'+IC.tick+'<span>'+esc(l)+'</span></li>'; }).join('')+'</ul></div>'+
+      '<details class="raw"><summary>See the agent\'s full answer</summary><pre>'+esc(L.raw)+'</pre></details>';
+    $('back').disabled=false; $('next').disabled=false; $('next').textContent='Try another alert';
+  }
+  function liveNext(){
+    var steps=liveSteps(), k=(steps[L.step]||{}).k;
+    if (L.step>=steps.length){ L={alert:null, own:'', raw:'', d:null, v:null, n:null, step:0}; return rLive(); }
+    if (k==='ask'){ var d=parseAgent(L.raw); if(!d.ok){ toast('No ROUTE found. Copy the agent\'s whole answer.'); return; } L.d=d; L.v=null; L.n=null; }
+    L.step++; rLive();
   }
   function lchoices(key, opts){
     return opts.map(function(o){ return '<button type="button" class="choice '+(o.cls||'')+'" data-lc="'+key+'|'+o.v+'" aria-pressed="'+(L[key]===o.v)+'">'+esc(o.t)+'</button>'; }).join('');
@@ -414,11 +437,11 @@ textarea{width:100%;min-height:120px;border-radius:12px;border:1px solid var(--l
       '<div class="roles">'+
         role('band','The band','Worn by the person')+role('oka','OKA','The AI that decides')+role('visitor','A visitor','Postie, carer, neighbour')+role('nurse','The nurse','Steps in when needed')+
       '</div>'+
-      '<button type="button" class="livecta" id="golive">'+ri('oka')+'<span><b>Try it with the real AI agent</b><span>Our OKA Care Agent in Microsoft Copilot makes the decision. The app shows it.</span></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>'+
+      '<button type="button" class="livecta" id="golive">'+ri('oka')+'<span><b>Live demo with our AI agent</b><span>Send an alert to the OKA agent in Copilot and see what it decides.</span></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>'+
       '<p class="eyebrow" style="margin-top:8px">Or follow a guided story</p>'+
       '<div class="stories">'+STORIES.map(function(s){ return '<button type="button" class="storybtn" data-story="'+s.id+'"><span class="num">'+s.n+'</span><span><b>'+esc(s.title)+'</b><span>'+esc(s.teaser)+'</span></span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>'; }).join('')+'</div>'+
       '<p class="note">Prototype with fictional people and services. DHSC / Microsoft AI Challenge, Group 5.</p>';
-    $('golive').onclick=function(){ S.story='live'; render(); window.scrollTo(0,0); };
+    $('golive').onclick=function(){ S.story='live'; L={alert:null, own:'', raw:'', d:null, v:null, n:null, step:0}; render(); window.scrollTo(0,0); };
     Array.prototype.forEach.call(document.querySelectorAll('[data-story]'), function(b){ b.onclick=function(){ S.story=b.getAttribute('data-story'); S.step=0; S.ch={}; render(); window.scrollTo(0,0); }; });
   }
   function role(r, t, s){ return '<div class="role">'+ri(r)+'<div><b>'+esc(t)+'</b><small>'+esc(s)+'</small></div></div>'; }
@@ -439,12 +462,13 @@ textarea{width:100%;min-height:120px;border-radius:12px;border:1px solid var(--l
   }
 
   $('next').onclick = function(){
+    if (S.story==='live'){ liveNext(); window.scrollTo(0,0); return; }
     var st=cur(), steps=visibleSteps(st);
     if (S.step >= steps.length){ var i=STORIES.indexOf(st), n=STORIES[i+1]; if (n){ S.story=n.id; S.step=0; S.ch={}; } else S.story=null; }
     else S.step++;
     render(); window.scrollTo(0,0);
   };
-  $('back').onclick = function(){ if (S.step===0) S.story=null; else S.step--; render(); window.scrollTo(0,0); };
+  $('back').onclick = function(){ if (S.story==='live'){ if (L.step===0) S.story=null; else L.step--; render(); window.scrollTo(0,0); return; } if (S.step===0) S.story=null; else S.step--; render(); window.scrollTo(0,0); };
   $('home').onclick = $('logo').onclick = function(){ S.story=null; render(); window.scrollTo(0,0); };
   try { localStorage.removeItem('oka-demo'); } catch(e){}
   render();
