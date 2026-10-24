@@ -162,6 +162,33 @@ textarea{width:100%;min-height:120px;border-radius:12px;border:1px solid var(--l
 .raw{width:100%;font-size:13px}
 .raw summary{cursor:pointer;color:var(--muted);font-weight:600}
 .raw pre{white-space:pre-wrap;font:inherit;font-size:13px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px;margin:8px 0 0}
+/* desktop: two columns so each step fits without scrolling */
+.hcol{display:flex;flex-direction:column;gap:18px}
+@media (min-width:860px){
+  .wrap{max-width:1080px}
+  .top{padding-block:14px 6px}
+  main{padding-block:4px 12px}
+  main.step{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);column-gap:48px;row-gap:14px;align-content:start;grid-auto-rows:min-content}
+  main.step > *{grid-column:1}
+  main.step > .stage, main.step > .endcard{grid-column:2;grid-row:1 / span 12;align-self:start}
+  main.step > .endcard + .linkish{grid-column:1}
+  main.home{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:56px;align-items:start}
+  h1.title{font-size:46px;margin-top:24px}
+  .say{font-size:24px}
+  .stage{padding:16px;gap:10px}
+  .alerts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .alertbtn{padding:10px 12px}
+  .phone{border-width:7px;border-radius:28px;max-width:340px}
+  .ph-top{padding:9px 12px}
+  .ph-body{padding:10px;gap:6px}
+  .notif{padding:10px 12px;font-size:13px}
+  .notif b{font-size:14px}
+  .ho{font-size:12.5px;gap:2px;padding-block:8px}
+  .choice{min-height:40px;font-size:14px}
+  .storybtn{padding:12px 2px}
+  .nav{max-width:1080px}
+  .wrist{transform:scale(.9)}
+}
 @media (prefers-reduced-motion: reduce){.pod.alert,.pod.alert .led{animation:none}}
 </style>
 
@@ -409,6 +436,7 @@ textarea{width:100%;min-height:120px;border-radius:12px;border:1px solid var(--l
   function val(x){ return typeof x==='function'?x():x; }
 
   function render(){
+    $('screen').className='step';
     if (S.story==='live') return rLive();
     var st = cur();
     $('home').hidden = !st; $('nav').hidden = !st;
@@ -431,16 +459,18 @@ textarea{width:100%;min-height:120px;border-radius:12px;border:1px solid var(--l
     $('next').textContent = S.step===steps.length-1 ? 'See the result' : 'Next';
   }
   function rHome(){
+    $('screen').className='home';
     $('screen').innerHTML =
+      '<div class="hcol">'+
       '<h1 class="title">Help is always <em>one knock away.</em></h1>'+
       '<p class="lead">A simple wristband for older people who live alone. When something looks wrong, OKA gets the right person to their door, before it becomes a trip to hospital.</p>'+
       '<div class="roles">'+
         role('band','The band','Worn by the person')+role('oka','OKA','The AI that decides')+role('visitor','A visitor','Postie, carer, neighbour')+role('nurse','The nurse','Steps in when needed')+
-      '</div>'+
+      '</div></div><div class="hcol">'+
       '<button type="button" class="livecta" id="golive">'+ri('oka')+'<span><b>Live demo with our AI agent</b><span>Send an alert to the OKA agent in Copilot and see what it decides.</span></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>'+
       '<p class="eyebrow" style="margin-top:8px">Or follow a guided story</p>'+
       '<div class="stories">'+STORIES.map(function(s){ return '<button type="button" class="storybtn" data-story="'+s.id+'"><span class="num">'+s.n+'</span><span><b>'+esc(s.title)+'</b><span>'+esc(s.teaser)+'</span></span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>'; }).join('')+'</div>'+
-      '<p class="note">Prototype with fictional people and services. DHSC / Microsoft AI Challenge, Group 5.</p>';
+      '<p class="note">Prototype with fictional people and services. DHSC / Microsoft AI Challenge, Group 5.</p></div>';
     $('golive').onclick=function(){ S.story='live'; L={alert:null, own:'', raw:'', d:null, v:null, n:null, step:0}; render(); window.scrollTo(0,0); };
     Array.prototype.forEach.call(document.querySelectorAll('[data-story]'), function(b){ b.onclick=function(){ S.story=b.getAttribute('data-story'); S.step=0; S.ch={}; render(); window.scrollTo(0,0); }; });
   }
