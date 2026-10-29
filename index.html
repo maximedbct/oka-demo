@@ -156,6 +156,8 @@ details.raw pre{white-space:pre-wrap;font:inherit;font-size:12.5px;background:va
   .phone .choice{min-height:38px}
   .phone .ph-body{gap:6px}
 }
+.live{width:100%;border-top:1px solid var(--line);padding-top:12px}
+.live summary{cursor:pointer;font-size:14px;font-weight:700;color:var(--muted);margin-bottom:10px}
 @media (prefers-reduced-motion: reduce){.pod.alert,.pod.alert .led{animation:none}}
 </style>
 
@@ -295,6 +297,7 @@ details.raw pre{white-space:pre-wrap;font:inherit;font-size:12.5px;background:va
     $('back').disabled = false;
     $('next').disabled = !r.ok;
     $('next').textContent = r.next || 'Next';
+    $('next').style.visibility = (k==='agent' && !r.ok) ? 'hidden' : 'visible';
   }
 
   function rHome(){
@@ -334,21 +337,24 @@ details.raw pre{white-space:pre-wrap;font:inherit;font-size:12.5px;background:va
 
   function rAgent(){
     var p = person();
+    var hasEx = !!(p && p.ex);
     var left = '<p class="eyebrow">Step 2 · The AI agent</p><h2>OKA asks the AI agent what to do.</h2>'+
-      '<p class="small">Our agent lives in Microsoft Copilot. It knows each person\'s normal and the rules. Today we pass the alert by copy and paste.</p>'+
+      '<p class="small">Our agent is built in Microsoft Copilot. It reads the person\'s file and the alert rules, then decides who should help.</p>'+
+      (hasEx ? '<button type="button" class="big" id="useEx">See the agent\'s answer</button>'+
+        '<p class="hint">An answer in the agent\'s format, so you can try OKA without Copilot access.</p>' : '<p class="hint">Your own alert needs our Copilot agent: follow the steps below.</p>')+
+      '<details class="live"'+((!hasEx||S.raw&&!S.example)?' open':'')+'><summary>Run it live in Copilot (team access)</summary>'+
       '<ol class="todo">'+
         '<li><span class="n">1</span><div><button type="button" class="btn '+(S.copied?'done':'dark')+'" id="copyA">'+(S.copied?'Alert copied':'Copy the alert')+'</button></div></li>'+
         '<li><span class="n">2</span><div><a class="btn" href="'+AGENT_URL+'" target="_blank" rel="noopener">Open the agent in Copilot '+IC.ext+'</a><span class="hint">Paste the alert, then copy the agent\'s whole answer.</span></div></li>'+
-        '<li><span class="n">3</span><div><textarea id="ans" placeholder="Paste the agent\'s answer here">'+esc(S.raw)+'</textarea>'+
-          (p && p.ex ? '<button type="button" class="link" id="useEx">No Copilot right now? Use an example answer</button>' : '')+'</div></li>'+
-      '</ol>';
+        '<li><span class="n">3</span><div><textarea id="ans" placeholder="Paste the agent\'s answer here">'+esc(S.example?'':S.raw)+'</textarea></div></li>'+
+      '</ol></details>';
     var right = '<div class="panel"><span class="lab" style="align-self:flex-start">What the band sends</span><div class="msg">'+esc(alertText())+'</div>'+
       '<div class="arrow">'+IC.down+'</div>'+
       '<div class="copilot"><span class="ic brand">'+IC.ai+'</span><span><b>OKA Care Agent</b><span>Microsoft 365 Copilot · reads the person\'s file and the alert rules</span></span></div></div>';
-    return {left:left, right:right, ok: !!S.raw.trim(), next:'See the decision', bind:function(){
+    return {left:left, right:right, ok: !!S.raw.trim() && !S.example, next:'See the decision', bind:function(){
       $('copyA').onclick=function(){ copy(alertText(), function(){ S.copied=true; render(); }); };
-      $('ans').oninput=function(){ S.raw=this.value; S.example=false; $('next').disabled=!this.value.trim(); };
-      if ($('useEx')) $('useEx').onclick=function(){ S.raw=person().ex; S.example=true; render(); };
+      $('ans').oninput=function(){ S.raw=this.value; S.example=false; var on=!!this.value.trim(); $('next').disabled=!on; $('next').style.visibility=on?'visible':'hidden'; };
+      if ($('useEx')) $('useEx').onclick=function(){ S.raw=person().ex; S.example=true; $('next').onclick(); };
     }};
   }
 
