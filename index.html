@@ -199,13 +199,13 @@ details.raw pre{white-space:pre-wrap;font:inherit;font-size:12.5px;background:va
   var PEOPLE = [
     {id:'patel', av:'AP', name:'Mrs Patel, 84', line:'Falls in her kitchen', state:'alert', event:'Mrs Patel falls in her kitchen at 07:42.', bubble:'"Are you OK? Press once if you\'re fine."', tag:'She presses once: "I\'m OK"', tcls:'',
      alert:'BAND ALERT. Mrs Asha Patel (band DS-001). 07:42 fall detected. Person pressed "I\'m OK" after 40 seconds. Steps since 07:42: 35. Heart rate 96. Now 07:43.',
-     ex:'ALERT: Band: fall detected 07:42, person pressed "I\'m OK" after 40 seconds.\nROUTE: AMBER - Nurse phone call today + OKA visitor check\nWHO ACTS: Elmside UCR nurse calls her by 12:00. The postie knocks on today\'s round (~10:30).\nWHY: Fall, person responded +2, On blood thinners and a fall +1 = 3\nCHANGE FROM USUAL: Usually about 800 steps by 9am. Only 35 steps since the fall.\nMESSAGE FOR THE OKA APP: Please knock at 12 Elm Road on your round and check Mrs Patel is OK. Report what you see.\nHANDOVER FOR THE NURSE:\n- Situation: Fall at 07:42. She pressed "I\'m OK". Very little movement since.\n- Background: 84, lives alone, high blood pressure, takes blood thinners.\n- Assessment: Injuries unknown. Head strike unknown.\n- Recommendation: Ask first if she hit her head. If yes, 999.\nFAMILY OR KEY HOLDER: Daughter Priya Patel may be told.\nFLAGS: none'},
+     ex:'ALERT: Band: fall detected 07:42, person pressed "I\'m OK" after 40 seconds.\nROUTE: AMBER - Nurse phone call today + OKA visitor check\nWHO ACTS: A nurse calls her before 12:00. The postie knocks on his round, around 10:30.\nWHY: Fall, person responded +2, On blood thinners and a fall +1 = 3\nCHANGE FROM USUAL: Usually about 800 steps by 9am. Only 35 steps since the fall.\nMESSAGE FOR THE OKA APP: Please knock at 12 Elm Road on your round and check Mrs Patel is OK. Report what you see.\nHANDOVER FOR THE NURSE:\n- Situation: Fall at 07:42. She pressed "I\'m OK". Very little movement since.\n- Background: 84, lives alone, high blood pressure, takes blood thinners.\n- Assessment: Injuries unknown. Head strike unknown.\n- Recommendation: Ask first if she hit her head. If yes, 999.\nFAMILY OR KEY HOLDER: Daughter Priya Patel may be told.\nFLAGS: none'},
     {id:'okafor', av:'DO', name:'Mr Okafor, 79', line:'Falls and doesn\'t answer', state:'alert', event:'Mr Okafor falls at 06:15.', bubble:'"Are you OK? Press once if you\'re fine."', tag:'No press. No movement.', tcls:'bad',
      alert:'BAND ALERT. Mr Daniel Okafor (band DS-002). 06:15 fall detected. No response to "Are you OK?" after 60 seconds. No movement since. Now 06:16.',
-     ex:'ALERT: Band: fall detected 06:15, no response, no movement.\nROUTE: AMBER (urgent) - Fall ladder: phone Mr Okafor and key holder Joan Price now, Joan knocks. If still no movement at 06:30, RED - 999 now.\nWHO ACTS: OKA phones Mr Okafor and Joan Price (5 Mill Lane, has a key) now. Elmside UCR is told.\nWHY: No response and no movement after a fall = fall ladder step 4. No score needed.\nCHANGE FROM USUAL: Usually up by 6am. Hard of hearing, so he may not have heard the band.\nMESSAGE FOR THE OKA APP: Joan, please knock loudly at 3 Mill Lane now and check on Daniel. You have his key. If he is on the floor and not responding, call 999.\nHANDOVER FOR THE NURSE:\n- Situation: Fall at 06:15. No response, no movement.\n- Background: 79, lives alone, type 2 diabetes, hard of hearing.\n- Assessment: Injuries unknown. Time on the floor unknown.\n- Recommendation: Check for injuries and low blood sugar.\nFAMILY OR KEY HOLDER: Neighbour Joan Price (key holder).\nFLAGS: none'},
+     ex:'ALERT: Band: fall detected 06:15, no response, no movement.\nROUTE: AMBER (urgent) - Fall ladder: phone Mr Okafor and key holder Joan Price now, Joan knocks. If still no movement at 06:30, RED - 999 now.\nWHO ACTS: OKA phones Mr Okafor and his neighbour Joan, who has a key. The nurse team is told.\nWHY: No response and no movement after a fall = fall ladder step 4. No score needed.\nCHANGE FROM USUAL: Usually up by 6am. Hard of hearing, so he may not have heard the band.\nMESSAGE FOR THE OKA APP: Joan, please knock loudly at 3 Mill Lane now and check on Daniel. You have his key. If he is on the floor and not responding, call 999.\nHANDOVER FOR THE NURSE:\n- Situation: Fall at 06:15. No response, no movement.\n- Background: 79, lives alone, type 2 diabetes, hard of hearing.\n- Assessment: Injuries unknown. Time on the floor unknown.\n- Recommendation: Check for injuries and low blood sugar.\nFAMILY OR KEY HOLDER: Neighbour Joan Price (key holder).\nFLAGS: none'},
     {id:'nowak', av:'HN', name:'Mrs Nowak, 87', line:'Doing a bit less each day', state:'', event:'Nothing dramatic. Mrs Nowak just does less, two days in a row.', bubble:'Steps 600 (usual 4,500) · Sleep 11h (usual 7h)', tag:'Pills missed 2 days', tcls:'neutral',
      alert:'BAND ALERT. Mrs Halina Nowak (band DS-004). Steps yesterday 900, today 600 at 16:00. Slept 11 hours last night and 10.5 the night before. Medication reminder not acknowledged 2 days in a row.',
-     ex:'ALERT: Band: fewer steps, more sleep and missed medication over 2 days.\nROUTE: AMBER - Nurse visit today\nWHO ACTS: Elmside UCR nurse visits today.\nWHY: Steps drop +2, Sleep change +1, Medication missed +1, Aged 85+ +1 = 5\nCHANGE FROM USUAL: Steps 600 today (usual 4,500). Slept 11 hours (usual 7).\nMESSAGE FOR THE OKA APP: No visitor needed.\nHANDOVER FOR THE NURSE:\n- Situation: Slow decline over 2 days.\n- Background: 87, lives alone, no memory problems recorded. Speaks Polish and some English.\n- Assessment: Fewer steps, more sleep, pills missed. Cause unknown.\n- Recommendation: Check why she missed her pills, and look for signs of infection.\nFAMILY OR KEY HOLDER: Son Marek Nowak may be told.\nFLAGS: translation may help'},
+     ex:'ALERT: Band: fewer steps, more sleep and missed medication over 2 days.\nROUTE: AMBER - Nurse visit today\nWHO ACTS: A nurse visits her today.\nWHY: Steps drop +2, Sleep change +1, Medication missed +1, Aged 85+ +1 = 5\nCHANGE FROM USUAL: Steps 600 today (usual 4,500). Slept 11 hours (usual 7).\nMESSAGE FOR THE OKA APP: No visitor needed.\nHANDOVER FOR THE NURSE:\n- Situation: Slow decline over 2 days.\n- Background: 87, lives alone, no memory problems recorded. Speaks Polish and some English.\n- Assessment: Fewer steps, more sleep, pills missed. Cause unknown.\n- Recommendation: Check why she missed her pills, and look for signs of infection.\nFAMILY OR KEY HOLDER: Son Marek Nowak may be told.\nFLAGS: translation may help'},
     {id:'hughes', av:'JH', name:'Mrs Hughes, 91', line:'Not wearing her band', state:'off', event:'No data from Mrs Hughes since 21:30 last night.', bubble:'Band not worn for 13 hours', tag:'No data', tcls:'neutral',
      alert:'BAND ALERT. Mrs June Hughes (band DS-003). Band not worn since 21:30 yesterday. Now 11:00. No data.',
      ex:'ALERT: Band not worn since 21:30 yesterday. No data.\nROUTE: AMBER - OKA visitor check\nWHO ACTS: Call daughter Carol first (Mrs Hughes often stays with her). If she is not there, the postie (~11:00) knocks. Deadline 12:00 because she is 91.\nWHY: Band not worn for 13 hours = visitor check. No nurse needed yet.\nCHANGE FROM USUAL: Usually at her window by 10am. Often forgets the band after a shower.\nMESSAGE FOR THE OKA APP: Please knock at Flat 4, Rose Court and check Mrs Hughes is OK. Report what you see.\nFAMILY OR KEY HOLDER: Daughter Carol Hughes.\nFLAGS: band not worn'},
@@ -215,7 +215,6 @@ details.raw pre{white-space:pre-wrap;font:inherit;font-size:12.5px;background:va
     {id:'price', av:'AP', name:'Mr Price, 89', line:'Same heartbeat alert', state:'alert', event:'Mr Price\'s band spots an irregular heartbeat too.', bubble:'"Are you feeling OK?"', tag:'He presses once: "I\'m fine"', tcls:'',
      alert:'BAND ALERT. Mr Arthur Price (band DS-010). Irregular heart rhythm alert at 09:00. Steps and sleep normal.',
      ex:'ALERT: Band: irregular heart rhythm at 09:00.\nROUTE: GREEN - Noted\nWHO ACTS: No one. Normal for him.\nWHY: Known atrial fibrillation in his record. Irregular rhythm alerts are expected = 0\nCHANGE FROM USUAL: Steps and sleep normal for him.\nMESSAGE FOR THE OKA APP: No visitor needed.\nFAMILY OR KEY HOLDER: No need to contact.\nFLAGS: none'},
-    {id:'own', av:'+', name:'Your own alert', line:'Let the jury write one', state:'alert', event:'Write any alert the band could send.', bubble:'', tag:'', tcls:'', alert:'', ex:''}
   ];
 
   // ---------- reading the agent's answer ----------
@@ -305,7 +304,7 @@ details.raw pre{white-space:pre-wrap;font:inherit;font-size:12.5px;background:va
       '<div class="left"><h1>Help is always <em>one knock away.</em></h1>'+
       '<p class="lead">A simple band for older people who live alone. When something looks wrong, our AI agent decides who should go and check, before it becomes a trip to hospital.</p>'+
       '<button type="button" class="big" id="start">Start the demo</button>'+
-      '<p class="hint">Fictional people and services. DHSC / Microsoft AI Challenge, Group 5.</p></div>'+
+      '<p class="hint">Fictional people and services. DHSC · King\'s IMPACT Week · Group 5.</p></div>'+
       '<div class="right"><div class="flow">'+
         fbox('band','','The band','Worn on the wrist. Notices falls and changes.')+'<div class="arrow">'+IC.down+'</div>'+
         fbox('ai','ai','The OKA agent','Built in Microsoft Copilot. Decides who acts.')+'<div class="arrow">'+IC.down+'</div>'+
@@ -323,7 +322,7 @@ details.raw pre{white-space:pre-wrap;font:inherit;font-size:12.5px;background:va
   function rAlert(){
     var p = person();
     var left = '<p class="eyebrow">Step 1 · The band</p><h2>Something happens at home.</h2>'+
-      '<p class="small">Pick a person. Their band notices something and sends an alert.</p>'+
+      '<p class="small">Pick a person.</p>'+
       '<div class="people">'+PEOPLE.map(function(x){ return '<button type="button" class="pbtn" data-p="'+x.id+'" aria-pressed="'+(S.p===x.id)+'"><span class="av">'+esc(x.av)+'</span><span><b>'+esc(x.name)+'</b><span>'+esc(x.line)+'</span></span></button>'; }).join('')+'</div>';
     var right;
     if (!p) right = '<div class="panel"><p class="empty">Pick a person to see what their band does.</p></div>';
@@ -337,24 +336,14 @@ details.raw pre{white-space:pre-wrap;font:inherit;font-size:12.5px;background:va
 
   function rAgent(){
     var p = person();
-    var hasEx = !!(p && p.ex);
-    var left = '<p class="eyebrow">Step 2 · The AI agent</p><h2>OKA asks the AI agent what to do.</h2>'+
-      '<p class="small">Our agent is built in Microsoft Copilot. It reads the person\'s file and the alert rules, then decides who should help.</p>'+
-      (hasEx ? '<button type="button" class="big" id="useEx">See the agent\'s answer</button>'+
-        '<p class="hint">An answer in the agent\'s format, so you can try OKA without Copilot access.</p>' : '<p class="hint">Your own alert needs our Copilot agent: follow the steps below.</p>')+
-      '<details class="live"'+((!hasEx||S.raw&&!S.example)?' open':'')+'><summary>Run it live in Copilot (team access)</summary>'+
-      '<ol class="todo">'+
-        '<li><span class="n">1</span><div><button type="button" class="btn '+(S.copied?'done':'dark')+'" id="copyA">'+(S.copied?'Alert copied':'Copy the alert')+'</button></div></li>'+
-        '<li><span class="n">2</span><div><a class="btn" href="'+AGENT_URL+'" target="_blank" rel="noopener">Open the agent in Copilot '+IC.ext+'</a><span class="hint">Paste the alert, then copy the agent\'s whole answer.</span></div></li>'+
-        '<li><span class="n">3</span><div><textarea id="ans" placeholder="Paste the agent\'s answer here">'+esc(S.example?'':S.raw)+'</textarea></div></li>'+
-      '</ol></details>';
+    var left = '<p class="eyebrow">Step 2 · The AI agent</p><h2>The AI agent decides who should help.</h2>'+
+      '<p class="small">Built in Microsoft Copilot. It knows each person\'s normal.</p>'+
+      '<button type="button" class="big" id="useEx">See the agent\'s answer</button>';
     var right = '<div class="panel"><span class="lab" style="align-self:flex-start">What the band sends</span><div class="msg">'+esc(alertText())+'</div>'+
       '<div class="arrow">'+IC.down+'</div>'+
-      '<div class="copilot"><span class="ic brand">'+IC.ai+'</span><span><b>OKA Care Agent</b><span>Microsoft 365 Copilot · reads the person\'s file and the alert rules</span></span></div></div>';
-    return {left:left, right:right, ok: !!S.raw.trim() && !S.example, next:'See the decision', bind:function(){
-      $('copyA').onclick=function(){ copy(alertText(), function(){ S.copied=true; render(); }); };
-      $('ans').oninput=function(){ S.raw=this.value; S.example=false; var on=!!this.value.trim(); $('next').disabled=!on; $('next').style.visibility=on?'visible':'hidden'; };
-      if ($('useEx')) $('useEx').onclick=function(){ S.raw=person().ex; S.example=true; $('next').onclick(); };
+      '<div class="copilot"><span class="ic brand">'+IC.ai+'</span><span><b>OKA Care Agent</b><span>Built in Microsoft Copilot</span></span></div></div>';
+    return {left:left, right:right, ok:false, next:'See the decision', bind:function(){
+      $('useEx').onclick=function(){ S.raw=person().ex; S.example=true; $('next').onclick(); };
     }};
   }
 
@@ -362,23 +351,19 @@ details.raw pre{white-space:pre-wrap;font:inherit;font-size:12.5px;background:va
     var d = S.d;
     var tag = d.lvl==='red' ? 'EMERGENCY' : d.lvl==='green' ? 'ALL FINE' : (d.urgent ? 'URGENT' : 'ACT TODAY');
     var left = '<p class="eyebrow">Step 3 · The decision</p><h2>The agent has decided.</h2>'+
-      '<p class="small">This comes straight from the agent\'s answer. Nobody typed it into the app.</p>'+
-      (S.example ? '<span class="source ex">Example answer in the agent\'s format</span>' : '<span class="source">'+IC.ai+'Answer from the OKA agent in Copilot</span>')+
-      '<details class="raw"><summary>See the agent\'s full answer</summary><pre>'+esc(S.raw)+'</pre></details>';
+      '<p class="small">Here is what happens next, and who does it.</p>';
     var right = '<div class="verdict '+d.lvl+'"><span class="pill">'+tag+'</span>'+
         '<ul class="actions">'+d.acts.map(function(a,i){ return '<li><i>'+(i+1)+'</i>'+esc(a)+'</li>'; }).join('')+d.ifs.map(function(a){ return '<li class="if"><i>!</i>'+esc(a)+'</li>'; }).join('')+'</ul>'+
         (d.who?'<div><span class="lab">Who</span><span class="clamp">'+esc(d.who)+'</span></div>':'')+
       '</div>'+
-      '<div class="card"><span class="lab">Why</span>'+(d.chips.length ? '<div class="chips">'+d.chips.map(function(c){ return '<span>'+esc(c)+'</span>'; }).join('')+(d.total?'<span class="total">= '+esc(d.total)+' points</span>':'')+'</div>' : '<span class="clamp">'+esc(d.why||'Not given')+'</span>')+'</div>'+
-      (d.chips.length?'<p class="hint" style="align-self:flex-start">Points are counted against this person\'s own normal, not general numbers.</p>':'');
+      '';
     return {left:left, right:right, ok:true};
   }
 
   function rVisitor(){
     var d = S.d;
     var left = '<p class="eyebrow">Step '+(S.i+1)+' · The visitor</p><h2>Someone knocks on the door.</h2>'+
-      '<p class="small">A postie, carer or neighbour gets the agent\'s message on their phone. They only knock, look and report. No medical questions.</p>'+
-      '<p class="hint">Tap what the visitor finds.</p>';
+      '<p class="small">A neighbour gets the agent\'s message. Tap what they find.</p>';
     var right = '<div class="panel">'+phone('visitor','OKA · Visitor', '<div class="notif"><b>Please knock</b><span>'+esc(d.msg)+'</span><span class="mut">Message written by the OKA agent</span></div>'+
       choices('v',[{v:'ok',t:'Seen: they look OK',c:'go'},{v:'none',t:'No answer'},{v:'floor',t:'On the floor: calling 999',c:'stop'}]))+'</div>';
     return {left:left, right:right, ok: !!S.v, bind:bindChoices};
@@ -389,15 +374,13 @@ details.raw pre{white-space:pre-wrap;font:inherit;font-size:12.5px;background:va
     var vis = S.v ? {ok:'Visitor: seen, looks OK',none:'Visitor: no answer at the door',floor:'Visitor: on the floor, 999 called'}[S.v] : '';
     if (is999()){
       var l999 = '<p class="eyebrow">Step '+(S.i+1)+' · The nurse team</p><h2>999 is called. The ambulance takes over.</h2>'+
-        '<p class="small">The nurse team is told straight away. The agent\'s handover goes with the alert, so the ambulance crew knows their history before they arrive.</p>'+
-        '<p class="hint">The nurse follows up after the crew has seen them.</p>';
+        '<p class="small">The nurse team is told straight away, with a summary written by the agent.</p>';
       var r999 = '<div class="panel">'+phone('nurse','OKA · Nurse team', '<div class="notif"><b>'+esc((person().id==='own'?'New case':person().name)+' · 999 called')+'</b><span class="mut">'+esc(vis||'Emergency route')+'</span><span class="mut">For your information. Ambulance on its way.</span></div>'+
         (d.handover.length?'<ul class="ho">'+d.handover.map(function(h){ var m=h.match(/^([^:]{2,22}):\s*(.*)$/); return '<li>'+(m?'<b>'+esc(m[1])+':</b> '+esc(m[2]):esc(h))+'</li>'; }).join('')+'</ul>':''))+'</div>';
       return {left:l999, right:r999, ok:true};
     }
     var left = '<p class="eyebrow">Step '+(S.i+1)+' · The nurse</p><h2>The nurse already has the full picture.</h2>'+
-      '<p class="small">The agent writes the handover, so the nurse doesn\'t start from scratch. A call takes minutes.</p>'+
-      '<p class="hint">Tap what the nurse finds.</p>';
+      '<p class="small">The agent has written a summary for them. Tap what the nurse finds.</p>';
     var right = '<div class="panel">'+phone('nurse','OKA · Nurse team', '<div class="notif"><b>'+esc((person().id==='own'?'New case':person().name)+' · '+((S.v==='none' && d.ifs.length) ? '999 called: still no movement' : S.v==='floor' ? '999 called by the visitor' : (d.acts.filter(function(a){ return /nurse|999|falls/i.test(a); })[0]||'Follow up today')))+'</b>'+(vis?'<span class="mut">'+esc(vis)+'</span>':'')+'</div>'+
       (d.handover.length?'<ul class="ho">'+d.handover.map(function(h){ var m=h.match(/^([^:]{2,22}):\s*(.*)$/); return '<li>'+(m?'<b>'+esc(m[1])+':</b> '+esc(m[2]):esc(h))+'</li>'; }).join('')+'</ul>':'')+
       choices('n',[{v:'ok',t:'Done: safe at home',c:'go'},{v:'hosp',t:'Needs hospital'}]))+'</div>';
@@ -415,8 +398,7 @@ details.raw pre{white-space:pre-wrap;font:inherit;font-size:12.5px;background:va
     var tl = [['Band', p.id==='own'?'Sent the alert':p.event],['OKA agent (Copilot)', d.acts.join(' · ')]];
     if (d.msg) tl.push(['Visitor', {ok:'Knocked: they look OK',none: d.ifs.length?'No answer, so 999 was called at the time limit':'Knocked: no answer',floor:'Found them on the floor and called 999'}[S.v]||'Knocked']);
     if (d.handover.length || d.lvl==='red') tl.push(['Nurse', called999 ? 'Told at once. Follows up after the ambulance crew' : S.n==='hosp'?'Sent them to hospital':'Checked: safe at home']);
-    var left = '<p class="eyebrow">Result</p><div class="endcard"><h2>'+esc(title)+'</h2><p>'+esc(sub)+'</p></div>'+
-      '<p class="small">The decision came from our agent in Microsoft Copilot. In a real service, Power Automate would pass alerts and answers automatically.</p>';
+    var left = '<p class="eyebrow">Result</p><div class="endcard"><h2>'+esc(title)+'</h2><p>'+esc(sub)+'</p></div>';
     var right = '<div class="panel"><span class="lab" style="align-self:flex-start">What happened</span><ul class="tl">'+tl.map(function(x){ return '<li><span><b>'+esc(x[0])+'</b><span>'+esc(x[1])+'</span></span></li>'; }).join('')+'</ul></div>';
     return {left:left, right:right, ok:true, next:'Try another person'};
   }
